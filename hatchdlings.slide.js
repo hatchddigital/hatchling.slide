@@ -55,7 +55,8 @@
 
 ;(function() {
 
-    var DATA_PROP = 'hls-item'
+    var DATA_PROP = 'hl-slide'
+      , ITEM = 'hls-item'
       , CURRENT = 'state-current'
       , HIDDEN = 'hide'
       , NEXT = 'hls-next'
@@ -69,7 +70,13 @@
         var slide = this;
         this.$element = $(element);
         this.visible = visible || false;
-        this.items = this.$element.find('.'+DATA_PROP);
+        this.items = this.$element.find('.'+ITEM);
+
+        // Set and extend default options with user provided
+        this.options = {
+            'loop': false
+        };
+        this.options = $.extend(this.options, options);
 
         // Initialize default sizes and areas
         var gallery_width = this.items.length * this.locs().width
@@ -118,12 +125,15 @@
      */
     Slide.prototype.prev = function (n) {
         var item = this.locs()
-          , prev = false;
-        if ((prev = this.current.prev()).length) {
-            prev.removeClass(HIDDEN).addClass(CURRENT).show();
-            this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
-            this.current = prev;
+          , prev = this.current.prev('.'+ITEM);
+        if (!prev.length && this.options.loop) {
+            prev = this.items.last();
         }
+        if (!prev.length) {
+            return false;
+        }
+        this.setCurrent(prev);
+        return prev;
     };
 
     /**
@@ -131,12 +141,21 @@
      */
     Slide.prototype.next = function (n) {
         var item = this.locs()
-          , next = false;
-        if ((next = this.current.next()).length) {
-            next.removeClass(HIDDEN).addClass(CURRENT).show();
-            this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
-            this.current = next;
+          , next = this.current.next('.'+ITEM);
+        if (!next.length && this.options.loop) {
+            next = this.items.first();
         }
+        if (!next.length) {
+            return false;
+        }
+        this.setCurrent(next);
+        return next;
+    };
+
+    Slide.prototype.setCurrent = function (new_element) {
+        new_element.removeClass(HIDDEN).addClass(CURRENT).show();
+        this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
+        this.current = new_element;
     };
 
     /**
