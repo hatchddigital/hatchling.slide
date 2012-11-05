@@ -8,18 +8,21 @@
 
     <div id="wrapper">
 
-        <article class="usage">
-            <hgroup>
-                <h1>Slide</h1>
-                <h2>A <em>hatchdling</em> jQuery plugin for carousel like functionality</h2>
-            </hgroup>
-            <p>
-                The slide functionality allows for simple carousel action in
-                your browser in a way that works for RWD. We've taken a look
-                at the requirements for the slider to change depending on the
-                width of the page as possible.
-            </p>
-            <h2>HTML Markup</h2>
+        <hgroup>
+            <h1>SLIDE</h1>
+            <h2>A <em>hatchdling</em> jQuery plugin for carousel like functionality</h2>
+        </hgroup>
+
+        <p>
+            The slide hatchdling allows for simple carousel action in
+            your browser in a way that works for RWD. We've taken a look
+            at the requirements for the slider to change depending on the
+            width of the page as possible.
+        </p>
+
+        <section class="usage">
+            <h1>USAGE</h1>
+            <h2>HTML</h2>
             <p>
                 The markup is made up of two parts. Inside a parent wrapper you
                 only require each slideable element to be given a class
@@ -58,64 +61,64 @@
                 <code>$('.slide').slide();</code> to the parent element of
                 your markup.
             </p>
-            <pre>
+        </section>
 
-            </pre>
-        </article>
+        <section class="examples">
+            <h1>EXAMPLES</h1>
+            <div id="single-slide" class="slide">
 
-        <div id="single-slide" class="slide">
+                <h2>Single Element Slider</h2>
 
-            <h2>Single Element Slider</h2>
+                <p>This example is for a single element (in this case image) slider
+                    which moves one per time</p>
 
-            <p>This example is for a single element (in this case image) slider
-                which moves one per time</p>
+                <ul class="items">
+                    <li class="hls-item state-current">
+                        <img src="a.jpg" />
+                    </li>
+                    <li class="hls-item state-current">
+                        <img src="b.jpg" />
+                    </li>
+                    <li class="hls-item state-current">
+                        <img src="c.jpg" />
+                    </li>
+                </ul>
 
-            <ul class="items">
-                <li class="hls-item state-current">
-                    <img src="a.jpg" />
-                </li>
-                <li class="hls-item state-current">
-                    <img src="b.jpg" />
-                </li>
-                <li class="hls-item state-current">
-                    <img src="c.jpg" />
-                </li>
-            </ul>
+                <ul class="hls-controls">
+                    <li class="hls-prev">Previous</li>
+                    <li class="hls-next">Next</li>
+                </ul>
 
-            <ul class="hls-controls">
-                <li class="hls-prev">Previous</li>
-                <li class="hls-next">Next</li>
-            </ul>
+            </div>
 
-        </div>
+            <div id="multi-slide" class="slide">
 
-        <div id="multi-slide" class="slide">
+                <h2>Multi-element Slider</h2>
 
-            <h2>Multi-element Slider</h2>
+                <p>
+                    This example is for sliding through multiple elements at
+                    once through changing the markup.
+                </p>
 
-            <p>
-                This example is for sliding through multiple elements at
-                once through changing the markup.
-            </p>
+                <ul class="hls-item state-current clearfix">
+                    <li><img src="a.jpg" /></li>
+                    <li><img src="b.jpg" /></li>
+                    <li><img src="c.jpg" /></li>
+                </ul>
 
-            <ul class="hls-item state-current">
-                <li><img src="a.jpg" /></li>
-                <li><img src="b.jpg" /></li>
-                <li><img src="c.jpg" /></li>
-            </ul>
+                <ul class="hls-item clearfix">
+                    <li><img src="c.jpg" /></li>
+                    <li><img src="a.jpg" /></li>
+                    <li><img src="b.jpg" /></li>
+                </ul>
 
-            <ul class="hls-item">
-                <li><img src="c.jpg" /></li>
-                <li><img src="a.jpg" /></li>
-                <li><img src="b.jpg" /></li>
-            </ul>
+                <ul class="hls-controls">
+                    <li class="hls-prev">Previous</li>
+                    <li class="hls-next">Next</li>
+                </ul>
 
-            <ul class="hls-controls">
-                <li class="hls-prev">Previous</li>
-                <li class="hls-next">Next</li>
-            </ul>
-
-        </div>
+            </div>
+        </section>
 
     </div>
 
