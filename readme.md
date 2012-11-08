@@ -30,4 +30,4 @@ Special classes: state-current can be used to set the showing row when the page 
 
 ## JavaScript
 
-All you are required to do is attach the jQuery plugin $('.slide').slide(); to the parent element of your markup.
+All you are required to do is attach the jQuery plugin `$('.slide').slide();` to the parent element of your markup.
