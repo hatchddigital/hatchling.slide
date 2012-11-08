@@ -80,18 +80,7 @@
 
         // Initialize default sizes and areas
         var gallery_width = this.items.length * this.locs().width
-          , visible_width = this.visible * this.locs().width
-          , default_wrap_styles = {
-
-          }
-          , default_inner_styles = {
-                'position': 'absolute',
-                'top': 0,
-                'left': 0,
-                'display': 'block',
-                'width': gallery_width + 'px',
-                'background': 'blue'
-            };
+          , visible_width = this.visible * this.locs().width;
         // Current is manually provided else first
         if (!(this.current = this.items.find('.'+CURRENT)).length) {
             (this.current = this.items.first()).addClass(CURRENT);
@@ -102,7 +91,7 @@
     };
 
     /**
-     * Returns current positional information of the slider
+     * Returns current positional information of the slider.
      */
     Slide.prototype.locs = function () {
         var slide = this;
@@ -121,7 +110,7 @@
     };
 
     /**
-     * Moves the slider to reveal the previous n element's
+     * Moves the slider to reveal the previous n elements.
      */
     Slide.prototype.prev = function (n) {
         var item = this.locs()
@@ -137,7 +126,7 @@
     };
 
     /**
-     * Moves the slider to reveal the next n element's
+     * Moves the slider to reveal the next n elements.
      */
     Slide.prototype.next = function (n) {
         var item = this.locs()
@@ -152,14 +141,20 @@
         return next;
     };
 
-    Slide.prototype.setCurrent = function (new_element) {
-        new_element.removeClass(HIDDEN).addClass(CURRENT).show();
+    /**
+     * Swaps the current showing slide with the element provided.
+     * @param $HTMLElement new_slide: The new 'current' slide element which
+     *                                should always be part of this.items
+     *                                though isn't specifically required.
+     */
+    Slide.prototype.setCurrent = function (new_slide) {
+        new_slide.removeClass(HIDDEN).addClass(CURRENT).show();
         this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
-        this.current = new_element;
+        this.current = new_slide;
     };
 
     /**
-     * jQuery plugin attaches map to a specific DOM elements
+     * jQuery plugin attaches map to a specific DOM elements.
      */
     $.fn.slide = function (options) {
 
@@ -170,7 +165,8 @@
               , slide = false;
             // If we can't find an existing modal, create a new one
             if (!slide) {
-                $this.data(DATA_PROP, (slide = new Slide(this, (options.visible || 3), options)));
+                slide = new Slide(this, (options.visible || 3), options);
+                $this.data(DATA_PROP, slide);
             }
             // Events
             $this.find('.'+NEXT).on('click', function () {
