@@ -31,6 +31,12 @@ h2{
     float:left;
     width:33%;
 }
+.hls-item img{
+    width:100%;
+}
+.hls-controls{
+    cursor:pointer;
+}
 
 /* Multislider width settings */
 #multi-slide .hls-item{

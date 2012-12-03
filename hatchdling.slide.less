@@ -1,0 +1,33 @@
+.slide {
+    position:relative;
+}
+
+.hls-controls{
+    list-style:none;
+    margin:0;
+}
+    .hls-items{
+        overflow:hidden;
+        position:relative;
+    }
+        .hls-item{
+            position:absolute;
+            top:0;
+            height:0;
+            overflow:hidden;
+            &.hide{
+                left:100%;
+                display:block;
+            }
+        }
+
+    .hls-control{
+        list-style:none;
+        cursor:pointer;
+            position:relative;  // Required if you are not styling absolute
+            z-index:2;
+    }
+        .hls-prev{
+        }
+        .hls-next{
+        }
