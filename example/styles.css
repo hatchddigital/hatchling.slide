@@ -10,52 +10,13 @@ h1{
 h2{
     font-size:1.5em;
 }
-
-#wrapper{
+.wrapper{
     max-width:800px;
     margin:0 auto;
     background:#eee;
     padding:20px;
     font-family:Helvetica,sans-serif;
 }
-
-/* Simple classes for all hl items to remove list styles */
-.items,
-.hls-item,
-.hls-controls {
-    list-style:none;
-    width:100%;
-    padding:0;
-}
-.hls-item li{
-    float:left;
-    width:33%;
-}
-.hls-item img{
-    width:100%;
-}
-.hls-controls{
-    cursor:pointer;
-}
-
-/* Multislider width settings */
-#multi-slide .hls-item{
-    width:100%;
-    display: block;
-}
-#multi-slide .hls-item li{
-    width:31.333333%;
-    margin-right:3%;
-    padding:0;
-}
-#multi-slide .hls-item li:last-child{
-    margin-right:0;
-}
-#multi-slide .hls-item img{
-    width:100%;
-}
-
-/* Helper functions */
 .clearfix:after {
     visibility: hidden;
     display: block;

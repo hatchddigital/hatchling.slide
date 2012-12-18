@@ -77,6 +77,7 @@
         this.items = this.$element.find('.'+ITEM);
         this.links = this.$element.find('.'+LINK);
         this.panel_width = this.$element.outerWidth();
+        this.itemwrap = this.$element.find('.hls-items');
 
         // Set and override default options from user
         this.options = $.extend({
@@ -131,34 +132,54 @@
      * Moves the slider to reveal the previous n element's
      */
     Slide.prototype.prev = function (n) {
-        var item = this.locs()
-          , prev = this.current.prev('.'+ITEM)
-          , reverse = false;
-        if (!prev.length && this.options.loop) {
-            reverse = true;
-            prev = this.items.last();
+        // Use standard JS to get percentage value, jQuery always returns
+        // the pixel value which is bad!
+        var current_position = parseInt(this.itemwrap[0].style.marginLeft, 10);
+        if (isNaN(current_position)) {
+            current_position = 0;
         }
-        if (!prev.length) {
-            return false;
-        }
-        this.swap(prev, reverse);
+        // We are just sliding the whole wrapper left by a 100% for each
+        // element, but we need to reset after a while I think...
+        var new_position = current_position + 100;
+        this.itemwrap.animate({'margin-left': (new_position + '%')});
+        // var item = this.locs()
+        //   , prev = this.current.prev('.'+ITEM)
+        //   , reverse = false;
+        // if (!prev.length && this.options.loop) {
+        //     reverse = true;
+        //     prev = this.items.last();
+        // }
+        // if (!prev.length) {
+        //     return false;
+        // }
+        // this.swap(prev, reverse);
     };
 
     /**
      * Moves the slider to reveal the next n element's
      */
     Slide.prototype.next = function (n) {
-        var item = this.locs()
-          , next = this.current.next('.'+ITEM)
-          , reverse = false;
-        if (!next.length && this.options.loop) {
-            reverse = true;
-            next = this.items.first();
+        // Use standard JS to get percentage value, jQuery always returns
+        // the pixel value which is bad!
+        var current_position = parseInt(this.itemwrap[0].style.marginLeft, 10);
+        if (isNaN(current_position)) {
+            current_position = 0;
         }
-        if (!next.length) {
-            return false;
-        }
-        this.swap(next, reverse);
+        // We are just sliding the whole wrapper left by a 100% for each
+        // element, but we need to reset after a while I think...
+        var new_position = current_position - 100;
+        this.itemwrap.animate({'margin-left': (new_position + '%')});
+        // var item = this.locs()
+        //   , next = this.current.next('.'+ITEM)
+        //   , reverse = false;
+        // if (!next.length && this.options.loop) {
+        //     reverse = true;
+        //     next = this.items.first();
+        // }
+        // if (!next.length) {
+        //     return false;
+        // }
+        // this.swap(next, reverse);
     };
 
     /**
@@ -187,23 +208,23 @@
 
         direction = direction * reverse;
 
-        // Set the "new" slide to the right starting position
-        panel.css({'left': slide.panel_width * (-direction)});
+        // // Set the "new" slide to the right starting position
+        // panel.css({'margin-left': slide.panel_width * (-direction)});
 
-        // Slide the "current" slide out of the view
-        slide.current.animate({'left': slide.panel_width * direction}, function () {
-            $(slide).css('left', '');
-        });
+        // // Slide the "current" slide out of the view
+        // slide.current.animate({'margin-left': slide.panel_width * direction}, function () {
+        //     $(slide).css('margin-left', '');
+        // });
 
-        // Slide the "new" slide into view
-        panel.animate({'left': 0}, function () {
-            $(slide).css({'left': ''});
-            slide.current.removeClass(STATE_CURRENT).addClass(STATE_HIDDEN);
-            panel.removeClass(STATE_HIDDEN).addClass(STATE_CURRENT);
-        });
+        // // Slide the "new" slide into view
+        // panel.animate({'margin-left': 0}, function () {
+        //     $(slide).css({'margin-left': ''});
+        //     slide.current.removeClass(STATE_CURRENT).addClass(STATE_HIDDEN);
+        //     panel.removeClass(STATE_HIDDEN).addClass(STATE_CURRENT);
+        // });
 
-        slide.current = panel;
-        slide.refresh_state();
+        // slide.current = panel;
+        // slide.refresh_state();
 
     };
 

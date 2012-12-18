@@ -5,19 +5,22 @@
   list-style: none;
   margin: 0;
 }
-.hls-items {
+.hls-viewslit {
   overflow: hidden;
-  position: relative;
+}
+.hls-items {
+  display: block;
+  width: 300%;
+  height: auto;
+  list-style: none;
+  padding: 0;
 }
 .hls-item {
-  position: absolute;
-  top: 0;
-  height: 0;
-  overflow: hidden;
+  float: left;
+  width: 33.333333%;
 }
-.hls-item.hide {
-  left: 100%;
-  display: block;
+.hls-item * {
+  width: 100%;
 }
 .hls-control {
   list-style: none;
