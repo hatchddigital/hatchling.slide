@@ -52,10 +52,23 @@ module.exports = function(grunt) {
         jQuery: true
       }
     },
+    less: {
+      defalt: {
+        options: {
+          paths: ["src/stylesheets/less"],
+          yuicompress: true
+        },
+        files: {
+          "dist/hatchling.slide.css" : "src/stylesheets/hatchling.slide.less"
+        }
+      }
+    },
     uglify: {}
   });
 
+  grunt.loadNpmTasks('grunt-contrib-less');
+
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'lint qunit concat min less');
 
 };

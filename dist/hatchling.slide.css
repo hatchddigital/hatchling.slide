@@ -17,38 +17,4 @@ Code: http://github.com/HatchdDigital
 ......MMM... MM....MMM. MMMM....MMM,.~ . MMMD.,$=...MM....MMM....MMM:,MMMI.....
 ......MMM... MM....:MMMMM:MM....ZMMMMM....MMMMMM7...MM....MMM.... MMMMMMD......
 
-==================**/
-
-.hatchling-slide {
-    position:relative;
-}
-    .hls-controls{
-        list-style:none;
-        margin:0;
-    }
-    .hls-viewslit{
-        overflow:hidden;
-    }
-    .hls-items{
-        display:block;
-        width:300%; // Requries JS
-        height:auto;
-        list-style:none;
-        padding:0;
-    }
-        .hls-item{
-            float:left;
-        }
-            .hls-item *{
-                width:100%;
-            }
-    .hls-control{
-        list-style:none;
-        cursor:pointer;
-        position:relative;  // Required if you are not styling absolute
-        z-index:2;
-    }
-        .hls-prev{
-        }
-        .hls-next{
-        }
+==================**/.hatchling-slide{position:relative}.hls-controls{list-style:none;margin:0}.hls-viewslit{overflow:hidden}.hls-items{display:block;width:300%;height:auto;list-style:none;padding:0}.hls-item{float:left}.hls-item *{width:100%}.hls-control{list-style:none;cursor:pointer;position:relative;z-index:2}
