@@ -26,8 +26,9 @@
         };
         this.options = $.extend(this.options, options);
         // Initialize default sizes and areas
-        var gallery_width = this.items.length * this.locs().width
-          , visible_width = this.visible * this.locs().width;
+        var width = this.items.first().outerWidth()
+          , gallery_width = this.items.length * width
+          , visible_width = this.visible * width;
         // Current is manually provided else first
         if (!(this.current = this.items.find('.'+CURRENT)).length) {
             (this.current = this.items.first()).addClass(CURRENT);
