@@ -1,0 +1,29 @@
+{
+  "name": "hatchling.slide",
+  "title": "Hatchling Slide",
+  "description": "A responsive aware slide user interface for carousel and gallery like navigation.",
+  "version": "0.2.0",
+  "homepage": "https://github.com/hatchddigital/hatchling.slide",
+  "author": {
+    "name": "Jimmy Hillis",
+    "email": "jimmy@hatchd.com.au",
+    "url": "http://hatchd.com.au"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hatchddigital/hatchling.slide.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hatchddigital/hatchling.slide/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/hatchddigital/hatchling.slide/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "1.7+"
+  },
+  "keywords": []
+}

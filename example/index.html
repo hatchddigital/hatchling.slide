@@ -126,13 +126,26 @@
 
 	</div>
 
+    <div id="current_pos">
+
+    </div>
+
 	<!-- Scripts and working code -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="../hatchdling.slide-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-				window.console.log('YEAH!')
 			$('.slide').slide({'loop': true});
+            // var pos = 0
+            //   , $debug = $('#current_pos');
+            // $('.slide').on('touchstart', function (e) {
+            //     window.console.log('TOUCH ME!');
+            //     window.console.log(e.touches);
+            // });
+            // $('.slide').on('touchmove', function (e) {
+            //     window.console.log('MOVE ME');
+            //     window.console.log(e);
+            // });
 		});
 	</script>
 
