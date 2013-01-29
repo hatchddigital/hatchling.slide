@@ -28,9 +28,6 @@
  * REQUIRED
  * @required jquery (v1.7.0+)
  *
- * IMPORTS
- * @import hatchdlings.module.js
- *
  * VALIDATION
  * All code must validate with JSHint (http://www.jshint.com/) to be launched
  * within a LIVE web application. NO debug code should remain in your final
@@ -48,14 +45,15 @@
  * This code builds a "sliding" bar for use on desktop and touch devices
  * when hiding content and sliding through it. See documentation
  *
- * @author Jimmy Hillis <jimmy@hatchd.com.au>
+ * @author Hatchd Digital <hello@hatchd.com.au>
  * @see http://hatchd.com.au/
  *
  */
 
 ;(function($) {
 
-    var DATA_PROP = 'hl-slide'
+    var DATA_PROP = 'hatchling-slide'
+      , ITEM_LIST = 'hls-items'
       , ITEM = 'hls-item'
       , CURRENT = 'state-current'
       , HIDDEN = 'hide'
@@ -66,33 +64,43 @@
      * Base object for storing requried information about each Slide module
      * on any given page.
      */
-    var Slide = function (element, visible, options)  {
-        var slide = this;
-        this.$element = $(element);
-        this.visible = visible || false;
-        this.items = this.$element.find('.'+ITEM);
+    var Slide = function Slide(element, options)  {
+
+        var slide = this
+          , item_count;
+
         // Set and extend default options with user provided
-        this.options = {
+        this.options = $.extend({
             'loop': false
-        };
-        this.options = $.extend(this.options, options);
-        // Initialize default sizes and areas
-        var width = this.items.first().outerWidth()
-          , gallery_width = this.items.length * width
-          , visible_width = this.visible * width;
-        // Current is manually provided else first
+        }, options);
+
+        this.$element = $(element);
+        this.items = this.$element.find('.' + ITEM);
+
+        // Force first element to be set to current only when it doesn't exist
         if (!(this.current = this.items.find('.'+CURRENT)).length) {
             (this.current = this.items.first()).addClass(CURRENT);
         }
+
         // Hide all non-current elements
         this.items.slice(1).addClass(HIDDEN).hide();
+
+        // Initialize sizes for each slide for responsive nature
+        item_count = this.items.length;
+        this.$element.find('.'+ITEM_LIST).css('width', (item_count * 100) + '%');
+        this.items.css('width', (100 / item_count) + '%');
+
         return this;
     };
 
     /**
-     * Moves the slider to reveal the previous n elements.
+     * Animation to previous element in the item list. Looping
+     * to last slide is possible when the user has reached the end,
+     * depending on object options.
+     * @return {HTMLDOMElement}   New current element
+     * @todo support to slide N elements (function parameter) at once
      */
-    Slide.prototype.prev = function (n) {
+    Slide.prototype.prev = function () {
 
         var prev = this.current.prev('.'+ITEM);
 
@@ -108,7 +116,11 @@
     };
 
     /**
-     * Moves the slider to reveal the next n elements.
+     * Animation to next element in the item list. Looping
+     * to first slide is possible when the user has reached the end,
+     * depending on object options.
+     * @return {HTMLDOMElement}   New current element
+     * @todo support to slide N elements (function parameter) at once
      */
     Slide.prototype.next = function (n) {
 
@@ -126,50 +138,67 @@
     };
 
     /**
-     * Swaps the current showing slide with the element provided.
-     * @param $HTMLElement new_slide: The new 'current' slide element which
-     *                                should always be part of this.items
-     *                                though isn't specifically required.
+     * Sets the new current element and runs any required transition
+     * animation as required.
+     * @param {HTMLDOMElement} new_slide New element to  be visible & current
      */
     Slide.prototype.setCurrent = function (new_slide) {
+
         var current_slide = this.current;
+
         new_slide.removeClass(HIDDEN).addClass(CURRENT).show();
         this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
         this.current = new_slide;
+
         // if provided, callback to user function
         if (typeof this.options.onchange === 'function') {
             this.options.onchange.call(this, new_slide, current_slide);
         }
+
+        return this;
     };
 
     /**
-     * jQuery plugin attaches map to a specific DOM elements.
+     * jQuery plugin function to initialize any Slide interface provided.
+     * @param  {object} options User options for new slide interface
+     * @return {array}          Current slide, if one exist else a list of
+     *                          all slide elements.
      */
     $.fn.slide = function (options) {
 
+        var page_slides = [];
         options = options || {};
 
         this.each(function () {
+
             var $this = $(this)
-              , slide = false;
-            // If we can't find an existing modal, create a new one
+              , slide = false
+              , $next = $this.find('.'+NEXT)
+              , $prev = $this.find('.'+PREV);
+
+            // Initialize Slide object, if required
             if (!slide) {
-                slide = new Slide(this, (options.visible || 3), options);
+                slide = new Slide(this, options);
                 $this.data(DATA_PROP, slide);
+                page_slides.push(slide);
             }
-            // Events
-            $this.find('.'+NEXT).on('click', function () {
+
+            // Attach events
+            $next.on('click', function () {
                 slide.next();
             });
-            $this.find('.'+PREV).on('click', function () {
+            $prev.on('click', function () {
                 slide.prev();
             });
+
         });
 
         if (this.length === 1) {
             return $(this).data(DATA_PROP);
         }
-
+        else {
+            return page_slides;
+        }
     };
 
 }(window.jQuery));
