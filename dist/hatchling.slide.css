@@ -1,9 +1,8 @@
-/*!================
+/*!
 
-Styles for screen
-Author: Hatchd
-Website: http://hatcd.com.au
-Code: http://github.com/HatchdDigital
+Author: Hatchd Digital - Perth, Western Australia
+Website: http://hatcd.com.au/
+Code: http://github.com/hatchddigital/hatchling.slide
 
 ......MMM...........................................MM ................MMM.....
 ......MMM.......................MM .................MM.................MMM.....
@@ -17,4 +16,4 @@ Code: http://github.com/HatchdDigital
 ......MMM... MM....MMM. MMMM....MMM,.~ . MMMD.,$=...MM....MMM....MMM:,MMMI.....
 ......MMM... MM....:MMMMM:MM....ZMMMMM....MMMMMM7...MM....MMM.... MMMMMMD......
 
-==================**/.hatchling-slide{position:relative}.hls-controls{list-style:none;margin:0}.hls-viewslit{overflow:hidden}.hls-items{display:block;width:300%;height:auto;list-style:none;padding:0}.hls-item{float:left}.hls-item *{width:100%}.hls-control{list-style:none;cursor:pointer;position:relative;z-index:2}
+*/.hatchling-slide{position:relative}.hls-viewslit{overflow:hidden}.hls-items{display:block;height:auto;padding:0}.hls-item{float:left}.hls-item *{width:100%}.hls-controls{list-style:none;padding-left:0}.hls-control{list-style:none;cursor:pointer;position:relative;z-index:2}

@@ -1,9 +1,8 @@
 <html>
 <head>
 	<title>Hatchling: Slide</title>
-	<link rel="stylesheet" href="../hatchdling.slide.css" media="screen" />
+	<link rel="stylesheet" href="../dist/hatchling.slide.css" media="screen" />
 	<link rel="stylesheet" href="styles.css" media="screen" />
-	<!-- Scripts are down the bottom, check it out! -->
 </head>
 <body>
 
@@ -21,58 +20,13 @@
 			width of the page as possible.
 		</p>
 
-		<section class="usage">
-			<h1>USAGE</h1>
-			<h2>HTML</h2>
-			<p>
-				The markup is made up of two parts. Inside a parent wrapper you
-				only require each slideable element to be given a class
-				<code>hls-item</code> and your controls to have the classes
-				<code>hls-prev</code> and <code>hls-next</code> for the
-				next and previous buttons.
-			</p>
-			<p>
-				Each item can be any element such as an HTML block or an
-				Image.
-			</p>
-			<pre>
-				<code>
-.slide
-	ul.items
-		li.hls-item.state-current
-			img
-		li.hls-item
-			img
-		li.hls-item
-			img
-	ul.controls
-		li.hls-prev Previous!
-		li.hls-next Next!
-				</code>
-			</pre>
-			<p>
-				Special classes: state-current can be used to set the showing row
-				when the page is initially loaded. By default the first row will
-				be set to state-current, when nothing is provided.
-			</p>
-
-			<h2>JavaScript</h2>
-			<p>
-				All you are required to do is attach the jQuery plugin
-				<code>$('.slide').slide();</code> to the parent element of
-				your markup.
-			</p>
-		</section>
-
 		<section class="examples">
-			<h1>EXAMPLES</h1>
-			<div id="single-slide" class="slide">
-
+			<div id="single-slide" class="hatchling-slide">
 				<h2>Single Element Slider</h2>
-
-				<p>This example is for a single element (in this case image) slider
-					which moves one per time</p>
-
+				<p>
+                    This example is for a single element (in this case image)
+                    sliderwhich moves one per time
+                </p>
 				<div class="hls-viewslit">
 					<ul class="hls-items clearfix">
 						<li class="hls-item state-current">
@@ -86,66 +40,21 @@
 						</li>
 					</ul>
 				</div>
-
 				<ul class="hls-controls">
 					<li class="hls-control hls-prev">Previous</li>
 					<li class="hls-control hls-next">Next</li>
 				</ul>
-
 			</div>
-<!--
-			<div id="multi-slide" class="slide">
-
-				<h2>Multi-element Slider</h2>
-
-				<p>
-					This example is for sliding through multiple elements at
-					once through changing the markup.
-				</p>
-
-				<div class="hls-items">
-					<ul class="hls-item state-current clearfix">
-						<li><img src="a.jpg" /></li>
-						<li><img src="b.jpg" /></li>
-						<li><img src="c.jpg" /></li>
-					</ul>
-
-					<ul class="hls-item clearfix">
-						<li><img src="c.jpg" /></li>
-						<li><img src="a.jpg" /></li>
-						<li><img src="b.jpg" /></li>
-					</ul>
-
-					<ul class="hls-controls">
-						<li class="hls-prev">Previous</li>
-						<li class="hls-next">Next</li>
-					</ul>
-					</div>
-			</div> -->
 		</section>
 
 	</div>
 
-    <div id="current_pos">
-
-    </div>
-
 	<!-- Scripts and working code -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script src="../hatchdling.slide-min.js"></script>
+	<script src="../libs/jquery/jquery.js"></script>
+	<script src="../dist/hatchling.slide.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.slide').slide({'loop': true});
-            // var pos = 0
-            //   , $debug = $('#current_pos');
-            // $('.slide').on('touchstart', function (e) {
-            //     window.console.log('TOUCH ME!');
-            //     window.console.log(e.touches);
-            // });
-            // $('.slide').on('touchmove', function (e) {
-            //     window.console.log('MOVE ME');
-            //     window.console.log(e);
-            // });
+			$('.hatchling-slide').slide({'loop': true});
 		});
 	</script>
 

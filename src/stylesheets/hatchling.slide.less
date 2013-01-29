@@ -1,9 +1,8 @@
-/*!================
+/*!
 
-Styles for screen
-Author: Hatchd
-Website: http://hatcd.com.au
-Code: http://github.com/HatchdDigital
+Author: Hatchd Digital - Perth, Western Australia
+Website: http://hatcd.com.au/
+Code: http://github.com/hatchddigital/hatchling.slide
 
 ......MMM...........................................MM ................MMM.....
 ......MMM.......................MM .................MM.................MMM.....
@@ -17,38 +16,36 @@ Code: http://github.com/HatchdDigital
 ......MMM... MM....MMM. MMMM....MMM,.~ . MMMD.,$=...MM....MMM....MMM:,MMMI.....
 ......MMM... MM....:MMMMM:MM....ZMMMMM....MMMMMM7...MM....MMM.... MMMMMMD......
 
-==================**/
+*/
 
 .hatchling-slide {
     position:relative;
 }
-    .hls-controls{
-        list-style:none;
-        margin:0;
-    }
     .hls-viewslit{
         overflow:hidden;
     }
-    .hls-items{
-        display:block;
-        width:300%; // Requries JS
-        height:auto;
-        list-style:none;
-        padding:0;
-    }
-        .hls-item{
-            float:left;
+        .hls-items{
+            display:block;
+            height:auto;
+            padding:0;
         }
-            .hls-item *{
-                width:100%;
+            .hls-item{
+                float:left;
             }
-    .hls-control{
+                .hls-item *{
+                    width:100%;
+                }
+    .hls-controls{
         list-style:none;
-        cursor:pointer;
-        position:relative;  // Required if you are not styling absolute
-        z-index:2;
+        padding-left:0;
     }
-        .hls-prev{
+        .hls-control{
+            list-style:none;
+            cursor:pointer;
+            position:relative;  // Required if you are not styling absolute
+            z-index:2;
         }
-        .hls-next{
-        }
+            .hls-prev{
+            }
+            .hls-next{
+            }
