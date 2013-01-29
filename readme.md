@@ -2,7 +2,11 @@
 
 A responsive aware slide user interface for carousel and gallery like navigation.
 
-The Hatchdling Slide allows for simple carousel functionality aimed specifically towards Responsive Web Design. We've taken a look at the requirements for a standard slider to deal with a change in width as much as possible, with as little JavaScript as required.
+Hatchling Slide allows for carousel functionality aimed specifically at
+Responsive Web Design (RED) front end. We've taken a look at the requirements
+for a standard slider and made changes to deal with a the support of
+responsive wrapper widths and made our code require as little JavaScript as
+required.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max].
@@ -13,11 +17,11 @@ Download the [production version][min] or the [development version][max].
 In your web page:
 
 ```html
-<script src="jquery.js"></script>
+<script src="libs/jquery/jquery.js"></script>
 <script src="dist/hatchling.slide.min.js"></script>
 <script>
-jQuery(function($) {
-  $.awesome(); // "awesome"
+$(document).ready(function() {
+    $('.hatchling-slide').slide({'loop': true});
 });
 </script>
 ```
@@ -48,10 +52,8 @@ Special classes: state-current can be used to set the showing row when the page 
 
 ### JavaScript
 
-All you are required to do is attach the jQuery plugin `$('.slide').slide();` to the parent element of your markup.
-
-## Examples
-_(Coming soon)_
+All you are required to do is attach the jQuery plugin `$('.hatchling-slide').slide();` to the parent element of your markup.
 
 ## Release History
-_(Nothing yet)_
+- v1.1 Responsive rewrite with Grunt JS support for development workflow.
+- v1.0 Initial release with working navigation. No responsive support.
