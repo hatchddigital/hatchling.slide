@@ -110,6 +110,8 @@
         return this;
     };
 
+    window.Slide = Slide;
+
     /**
      * jQuery plugin function to initialize any Slide interface provided.
      * @param  {object} options User options for new slide interface

@@ -45,7 +45,8 @@
  * This code builds a "sliding" bar for use on desktop and touch devices
  * when hiding content and sliding through it. See documentation
  *
- * @author Hatchd Digital <hello@hatchd.com.au>
+ * @company Hatchd Digital <hello@hatchd.com.au>
+ * @author Jimmy Hillis <jimmy@hatchd.com.au>
  * @see http://hatchd.com.au/
  *
  */
@@ -64,7 +65,7 @@
      * Base object for storing requried information about each Slide module
      * on any given page.
      */
-    var Slide = function Slide(element, options)  {
+    var Slide = function Slide(element, options) {
 
         var slide = this
           , item_count;
@@ -76,18 +77,19 @@
 
         this.$element = $(element);
         this.items = this.$element.find('.' + ITEM);
+        this.item_list = this.$element.find('.' + ITEM_LIST);
 
         // Force first element to be set to current only when it doesn't exist
-        if (!(this.current = this.items.find('.'+CURRENT)).length) {
+        if (!(this.current = $(this.item_list.find('.'+CURRENT))).length) {
             (this.current = this.items.first()).addClass(CURRENT);
         }
-
-        // Hide all non-current elements
-        this.items.slice(1).addClass(HIDDEN).hide();
+        // Hide all elements, which aren't current
+        this.items.not(this.current).addClass(HIDDEN).hide();
 
         // Initialize sizes for each slide for responsive nature
         item_count = this.items.length;
-        this.$element.find('.'+ITEM_LIST).css('width', (item_count * 100) + '%');
+        this.$element.find('.'+ITEM_LIST).css('width',
+                                              (item_count * 100) + '%');
         this.items.css('width', (100 / item_count) + '%');
 
         return this;
@@ -184,10 +186,13 @@
             }
 
             // Attach events
-            $next.on('click', function () {
+            $next.on('click', function (e) {
+                e.preventDefault();
+                window.console.log('Yeah!');
                 slide.next();
             });
-            $prev.on('click', function () {
+            $prev.on('click', function (e) {
+                e.preventDefault();
                 slide.prev();
             });
 
