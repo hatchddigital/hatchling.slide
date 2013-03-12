@@ -80,7 +80,7 @@
         this.item_list = this.$element.find('.' + ITEM_LIST);
 
         // Force first element to be set to current only when it doesn't exist
-        if (!(this.current = $(this.item_list.find('.'+CURRENT))).length) {
+        if (!(this.current = $(this.item_list.find('.' + ITEM + '.' + CURRENT))).length) {
             (this.current = this.items.first()).addClass(CURRENT);
         }
         // Hide all elements, which aren't current
@@ -157,6 +157,8 @@
             this.options.onchange.call(this, new_slide, current_slide);
         }
 
+        window.console.log('what');
+
         return this;
     };
 
@@ -184,6 +186,8 @@
                 $this.data(DATA_PROP, slide);
                 page_slides.push(slide);
             }
+
+            window.console.log($next);
 
             // Attach events
             $next.on('click', function (e) {

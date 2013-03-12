@@ -1,4 +1,4 @@
-/*! Hatchling Slide - v0.2.0 - 2013-01-29
+/*! Hatchling Slide - v0.2.0 - 2013-03-07
 * https://github.com/hatchddigital/hatchling.slide
 * Copyright (c) 2013 Jimmy Hillis; Licensed MIT */
 
@@ -16,7 +16,7 @@
      * Base object for storing requried information about each Slide module
      * on any given page.
      */
-    var Slide = function Slide(element, options)  {
+    var Slide = function Slide(element, options) {
 
         var slide = this
           , item_count;
@@ -28,18 +28,19 @@
 
         this.$element = $(element);
         this.items = this.$element.find('.' + ITEM);
+        this.item_list = this.$element.find('.' + ITEM_LIST);
 
         // Force first element to be set to current only when it doesn't exist
-        if (!(this.current = this.items.find('.'+CURRENT)).length) {
+        if (!(this.current = $(this.item_list.find('.' + ITEM + '.' + CURRENT))).length) {
             (this.current = this.items.first()).addClass(CURRENT);
         }
-
-        // Hide all non-current elements
-        this.items.slice(1).addClass(HIDDEN).hide();
+        // Hide all elements, which aren't current
+        this.items.not(this.current).addClass(HIDDEN).hide();
 
         // Initialize sizes for each slide for responsive nature
         item_count = this.items.length;
-        this.$element.find('.'+ITEM_LIST).css('width', (item_count * 100) + '%');
+        this.$element.find('.'+ITEM_LIST).css('width',
+                                              (item_count * 100) + '%');
         this.items.css('width', (100 / item_count) + '%');
 
         return this;
@@ -107,10 +108,10 @@
             this.options.onchange.call(this, new_slide, current_slide);
         }
 
+        window.console.log('what');
+
         return this;
     };
-
-    window.Slide = Slide;
 
     /**
      * jQuery plugin function to initialize any Slide interface provided.
@@ -137,11 +138,16 @@
                 page_slides.push(slide);
             }
 
+            window.console.log($next);
+
             // Attach events
-            $next.on('click', function () {
+            $next.on('click', function (e) {
+                e.preventDefault();
+                window.console.log('Yeah!');
                 slide.next();
             });
-            $prev.on('click', function () {
+            $prev.on('click', function (e) {
+                e.preventDefault();
                 slide.prev();
             });
 
