@@ -1,16 +1,32 @@
-/*! Hatchling Slide - v0.2.0 - 2013-03-07
+/*! Hatchling Slide - v0.1.1 - 2013-07-09
 * https://github.com/hatchddigital/hatchling.slide
 * Copyright (c) 2013 Jimmy Hillis; Licensed MIT */
 
-;(function($) {
+/* global define */
+/* jshint laxcomma: true, laxbreak: true, camelcase: false */
 
-    var DATA_PROP = 'hatchling-slide'
-      , ITEM_LIST = 'hls-items'
-      , ITEM = 'hls-item'
-      , CURRENT = 'state-current'
-      , HIDDEN = 'hide'
-      , NEXT = 'hls-next'
-      , PREV = 'hls-prev';
+(function (factory) {
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    }
+    else {
+        // Browser globals
+        window.Slide = factory(window.jQuery);
+    }
+
+}(function ($) {
+    'use strict';
+
+    var DATA_PROP = 'hatchling-slide';
+    var ITEM_LIST = 'hls-items';
+    var ITEM = 'hls-item';
+    var CURRENT = 'state-current';
+    var HIDDEN = 'state-hide';
+    var NEXT = 'hls-next';
+    var PREV = 'hls-prev';
 
     /**
      * Base object for storing requried information about each Slide module
@@ -18,8 +34,7 @@
      */
     var Slide = function Slide(element, options) {
 
-        var slide = this
-          , item_count;
+        var item_count;
 
         // Set and extend default options with user provided
         this.options = $.extend({
@@ -30,17 +45,20 @@
         this.items = this.$element.find('.' + ITEM);
         this.item_list = this.$element.find('.' + ITEM_LIST);
 
-        // Force first element to be set to current only when it doesn't exist
-        if (!(this.current = $(this.item_list.find('.' + ITEM + '.' + CURRENT))).length) {
-            (this.current = this.items.first()).addClass(CURRENT);
+        // First element to be `current` when tag doesn't exist
+        this.current = $(this.item_list.children('.' + CURRENT));
+        if (!this.current.length) {
+            this.current = this.items.first();
+            this.current.addClass(CURRENT);
         }
+
         // Hide all elements, which aren't current
-        this.items.not(this.current).addClass(HIDDEN).hide();
+        this.items.not(this.current).addClass(HIDDEN);
 
         // Initialize sizes for each slide for responsive nature
         item_count = this.items.length;
-        this.$element.find('.'+ITEM_LIST).css('width',
-                                              (item_count * 100) + '%');
+        this.$element.find('.'+ITEM_LIST).css(
+            'width', (item_count * 100) + '%');
         this.items.css('width', (100 / item_count) + '%');
 
         return this;
@@ -75,9 +93,9 @@
      * @return {HTMLDOMElement}   New current element
      * @todo support to slide N elements (function parameter) at once
      */
-    Slide.prototype.next = function (n) {
+    Slide.prototype.next = function () {
 
-        var next = this.current.next('.'+ITEM);
+        var next = this.current.next('.' + ITEM);
 
         if (!next.length && this.options.loop) {
             next = this.items.first();
@@ -99,16 +117,14 @@
 
         var current_slide = this.current;
 
-        new_slide.removeClass(HIDDEN).addClass(CURRENT).show();
-        this.current.removeClass(CURRENT).addClass(HIDDEN).hide();
+        this.item_list.children().removeClass(CURRENT).addClass(HIDDEN);
+        new_slide.removeClass(HIDDEN).addClass(CURRENT);
         this.current = new_slide;
 
         // if provided, callback to user function
         if (typeof this.options.onchange === 'function') {
             this.options.onchange.call(this, new_slide, current_slide);
         }
-
-        window.console.log('what');
 
         return this;
     };
@@ -126,10 +142,10 @@
 
         this.each(function () {
 
-            var $this = $(this)
-              , slide = false
-              , $next = $this.find('.'+NEXT)
-              , $prev = $this.find('.'+PREV);
+            var $this = $(this);
+            var slide = false;
+            var $next = $this.find('.' + NEXT);
+            var $prev = $this.find('.' + PREV);
 
             // Initialize Slide object, if required
             if (!slide) {
@@ -138,12 +154,9 @@
                 page_slides.push(slide);
             }
 
-            window.console.log($next);
-
             // Attach events
             $next.on('click', function (e) {
                 e.preventDefault();
-                window.console.log('Yeah!');
                 slide.next();
             });
             $prev.on('click', function (e) {
@@ -161,4 +174,6 @@
         }
     };
 
-}(window.jQuery));
+    return Slide;
+
+}));

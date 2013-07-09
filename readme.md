@@ -36,17 +36,30 @@ The markup is made up of two simple pieces. Inside a parent wrapper you only req
 
 Each item can be any element such as an HTML block or an Image.
 
-    .slide
-            ul.items
-                    li.hls-item.state-current
-                            img
-                    li.hls-item
-                            img
-                    li.hls-item
-                            img
-            ul.controls
-                    li.hls-prev Previous!
-                    li.hls-next Next!
+```html
+<div class="hatchling-slide">
+    <div class="hls-viewslit">
+        <ul class="hls-items">
+            <li class="hls-item state-current">
+                <img src="image.jpg" />
+            </li>
+            <li class="hls-item">
+                <img src="image-2.jpg" />
+            </li>
+            <li class="hls-item">
+                <img src="image-2.jpg" />
+            </li>
+        <ul class="controls">
+            <li class="hls-control hls-prev">
+                Previous Slide
+            </li>
+            <li class="hls-control hls-next">
+                Next Slide
+            </li>
+        </ul>
+    </div>
+</div>
+```
 
 Special classes: state-current can be used to set the showing row when the page is initially loaded. By default the first row will be set to state-current, when nothing is provided.
 
@@ -55,5 +68,6 @@ Special classes: state-current can be used to set the showing row when the page 
 All you are required to do is attach the jQuery plugin `$('.hatchling-slide').slide();` to the parent element of your markup.
 
 ## Release History
+- v1.1.1 Added new package support and updated documentation
 - v1.1 Responsive rewrite with Grunt JS support for development workflow.
 - v1.0 Initial release with working navigation. No responsive support.

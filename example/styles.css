@@ -35,3 +35,7 @@ h2{
 .clearfix {
     display: block;
 }
+.hide,
+.state-hide{
+    display:none;
+}
