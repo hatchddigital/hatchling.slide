@@ -157,8 +157,6 @@
             this.options.onchange.call(this, new_slide, current_slide);
         }
 
-        window.console.log('what');
-
         return this;
     };
 
@@ -187,12 +185,9 @@
                 page_slides.push(slide);
             }
 
-            window.console.log($next);
-
             // Attach events
             $next.on('click', function (e) {
                 e.preventDefault();
-                window.console.log('Yeah!');
                 slide.next();
             });
             $prev.on('click', function (e) {
