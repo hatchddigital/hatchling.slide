@@ -18,34 +18,37 @@ Code: http://github.com/hatchddigital/hatchling.slide
 
 */
 
-.hatchling-slide {
+.slide {
     position:relative;
+    overflow:hidden;
+    width:100%;
 }
-    .hls-viewslit{
-        overflow:hidden;
+
+    .slide-items{
+        padding-left:0;
+        list-style:none;
     }
-        .hls-items{
-            display:block;
-            height:auto;
-            padding:0;
-        }
-            .hls-item{
-                float:left;
+
+        .slide-item{
+            float:left;
+            transition:all 0.45s ease-in-out;
+            img{
+                width:100%;
+                height:auto;
             }
-                .hls-item *{
-                    width:100%;
-                }
-    .hls-controls{
+        }
+
+    .slide-controls{
         list-style:none;
         padding-left:0;
     }
-        .hls-control{
+
+        .slide-control{
             list-style:none;
             cursor:pointer;
             position:relative;  // Required if you are not styling absolute
             z-index:2;
         }
-            .hls-prev{
-            }
-            .hls-next{
-            }
+
+            .slide-prev{}
+            .slide-next{}

@@ -92,7 +92,7 @@ module.exports = function (grunt) {
     // Simply watch script which does a build on entry
     grunt.registerTask('watch', [
         'default',
-        'qunit',
+        // 'qunit',
         'regarde'
     ]);
 

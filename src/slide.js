@@ -1,9 +1,44 @@
-/*! Hatchling Slide - v0.1.1 - 2013-07-09
-* https://github.com/hatchddigital/hatchling.slide
-* Copyright (c) 2013 Jimmy Hillis; Licensed MIT */
+/**
+ * HATCHD DIGITAL SLIDE
+ *
+ * The slide hatchdling allows for simple carousel action in your browser in
+ * a way that works for RWD. We've taken a look at the requirements for the
+ * slider to change depending on the width of the page as possible.
+ *
+ * This code has been developed in house at HATCHD DIGITAL.
+ * @see http://hatchd.com.au/
+ *
+ * FOR DEVELOPERS:
+ *
+ * The code in this file should always be well formatted and never be
+ * used in production systems. Your site should always use disc/*-.min.js
+ * which contains a packed and minified version of the script
+ * prepended with all dependencies.
+ *
+ * REQUIRED FRAMEWORKS
+ *
+ * @required jquery (v1.8.0+)
+ * -- (http://jquery.com)
+ *
+ * VALIDATION
+ *
+ * All code must validate with JSHint (http://www.jshint.com/) before
+ * commiting this repo. NO debug code should remain in your final
+ * versions. Ensure to remove every reference to console.log.
+ *
+ * STYLE
+ *
+ * All code should be within 79 characters WIDE to meet standard Hatchd
+ * protocol. Reformat code cleanly to fit within this tool.
+ *
+ * CONTRIBUTORS
+ *
+ * @author Jimmy Hillis <jimmy@hatchd.com.au>
+ * @author Niaal Holder <niaal@hatchd.com.au>
+ *
+ */
 
 /* global define */
-/* jshint laxcomma: true, laxbreak: true, camelcase: false */
 
 (function (factory) {
     'use strict';
@@ -20,17 +55,13 @@
 }(function ($) {
     'use strict';
 
-    var DATA_PROP = 'hatchling-slide';
-    var ITEM_LIST = 'hls-items';
-    var ITEM = 'hls-item';
-    var CURRENT = 'state-current';
-    var HIDDEN = 'state-hide';
-    var NEXT = 'hls-next';
-    var PREV = 'hls-prev';
-
     /**
      * Base object for storing requried information about each Slide module
      * on any given page.
+     *
+     * @param {selector} The element wrapping the Slide
+     * @param {object} Default initialization options
+     * @return Slide
      */
     var Slide = function Slide(element, options) {
 
@@ -41,26 +72,51 @@
             'loop': false
         }, options);
 
-        this.$element = $(element);
-        this.items = this.$element.find('.' + ITEM);
-        this.item_list = this.$element.find('.' + ITEM_LIST);
+        // Set local private variables for managing the current state
+        this._element = $(element);
+        this._items = this._element.find('.slide-item');
+        this._translate = 0;
 
-        // First element to be `current` when tag doesn't exist
-        this.current = $(this.item_list.children('.' + CURRENT));
-        if (!this.current.length) {
-            this.current = this.items.first();
-            this.current.addClass(CURRENT);
+        // Find the initial current image
+        this._current = $(this._items.filter('.state-current'));
+        if (!this._current.length) {
+            this._current = this._items.first();
+            this._current.addClass('state-current');
         }
 
-        // Hide all elements, which aren't current
-        this.items.not(this.current).addClass(HIDDEN);
-
         // Initialize sizes for each slide for responsive nature
-        item_count = this.items.length;
-        this.$element.find('.'+ITEM_LIST).css(
-            'width', (item_count * 100) + '%');
-        this.items.css('width', (100 / item_count) + '%');
+        this._element.find('.slide-view').css(
+            'width', (100 * this._items.length).toString() + '%');
+        this._items.css('width', (100 / this._items.length).toString() + '%');
 
+        // Bind all events for next/previous/specific
+        this._bind();
+
+        return this;
+    };
+
+    /**
+     * Attach click events for next/previous and moving to a specific
+     * slide element from the required classes.
+     *
+     * @return {Slide}
+     */
+    Slide.prototype._bind = function () {
+        var that = this;
+        this._element.find('.slide-next').on('click', function (e) {
+            that.next();
+            e.preventDefault();
+        });
+        this._element.find('.slide-prev').on('click', function (e) {
+            that.prev();
+            e.preventDefault();
+        });
+        this._element.find('.slide-select').on('click', function (e) {
+            var $this = $(this);
+            var new_slide = that._element.find($this.attr('href'));
+            that.setCurrent(new_slide);
+            e.preventDefault();
+        });
         return this;
     };
 
@@ -68,110 +124,103 @@
      * Animation to previous element in the item list. Looping
      * to last slide is possible when the user has reached the end,
      * depending on object options.
-     * @return {HTMLDOMElement}   New current element
-     * @todo support to slide N elements (function parameter) at once
+     *
+     * @return {selector}  New current element
      */
     Slide.prototype.prev = function () {
-
-        var prev = this.current.prev('.'+ITEM);
-
-        if (!prev.length && this.options.loop) {
-            prev = this.items.last();
+        if (this.hasLess()) {
+            this.setCurrent(this._current.prev());
         }
-        if (!prev.length) {
-            return false;
-        }
-        this.setCurrent(prev);
-
-        return prev;
     };
 
     /**
      * Animation to next element in the item list. Looping
      * to first slide is possible when the user has reached the end,
      * depending on object options.
-     * @return {HTMLDOMElement}   New current element
-     * @todo support to slide N elements (function parameter) at once
+     *
+     * @return {selector}   New current element
      */
     Slide.prototype.next = function () {
-
-        var next = this.current.next('.' + ITEM);
-
-        if (!next.length && this.options.loop) {
-            next = this.items.first();
+        if (this.hasMore()) {
+            this.setCurrent(this._current.next());
         }
-        if (!next.length) {
-            return false;
-        }
-        this.setCurrent(next);
-
-        return next;
     };
 
     /**
      * Sets the new current element and runs any required transition
      * animation as required.
-     * @param {HTMLDOMElement} new_slide New element to  be visible & current
+     *
+     * @param {selector} new_slide New element to  be visible & current
+     * @return Slide
      */
     Slide.prototype.setCurrent = function (new_slide) {
-
-        var current_slide = this.current;
-
-        this.item_list.children().removeClass(CURRENT).addClass(HIDDEN);
-        new_slide.removeClass(HIDDEN).addClass(CURRENT);
-        this.current = new_slide;
-
-        // if provided, callback to user function
-        if (typeof this.options.onchange === 'function') {
-            this.options.onchange.call(this, new_slide, current_slide);
+        var index = this._items.index(new_slide);
+        var current_index = this._items.index(this._current);
+        // No item found
+        if (index === -1 || index === current_index) {
+            return;
         }
+        // The item is after the current
+        else if (index > current_index) {
+            this._translate = this._translate - ((index - current_index) * 100);
+        }
+        // The item is before the current
+        else {
+            this._translate = this._translate + ((current_index - index) * 100);
+        }
+        // Transform the items in the slideshow to move into the correct position
+        this._items.css('transform',
+                        'translateX(' + this._translate.toString() + '%)');
+        this._current = this._current.removeClass('state-current');
+        this._current = $(new_slide).addClass('state-current');
+    };
 
-        return this;
+    /**
+     * Return true if there are more photos (to the "right") to use with
+     * Slide.next
+     *
+     * @return bool
+     */
+    Slide.prototype.hasMore = function () {
+        if (this._translate === (-100 * (this._items.length - 1))) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Return true if there are more photos (to the "left") to use with
+     * Slide.prev
+     *
+     * @return bool
+     */
+    Slide.prototype.hasLess = function () {
+        if (this._translate === 0) {
+            return false;
+        }
+        return true;
     };
 
     /**
      * jQuery plugin function to initialize any Slide interface provided.
-     * @param  {object} options User options for new slide interface
-     * @return {array}          Current slide, if one exist else a list of
-     *                          all slide elements.
+     *
+     * @param {object} options User options for new slide interface
+     * @return {selector}
      */
     $.fn.slide = function (options) {
 
         var page_slides = [];
         options = options || {};
 
-        this.each(function () {
-
-            var $this = $(this);
-            var slide = false;
-            var $next = $this.find('.' + NEXT);
-            var $prev = $this.find('.' + PREV);
-
-            // Initialize Slide object, if required
+        return this.each(function () {
+            var slide = $(this).data('slide');
             if (!slide) {
                 slide = new Slide(this, options);
-                $this.data(DATA_PROP, slide);
-                page_slides.push(slide);
+                $(this).data('slide', slide);
             }
-
-            // Attach events
-            $next.on('click', function (e) {
-                e.preventDefault();
-                slide.next();
-            });
-            $prev.on('click', function (e) {
-                e.preventDefault();
-                slide.prev();
-            });
 
         });
 
-        if (this.length === 1) {
-            return $(this).data(DATA_PROP);
-        }
-        else {
-            return page_slides;
-        }
     };
 
     return Slide;

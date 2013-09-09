@@ -21,28 +21,41 @@
 		</p>
 
 		<section class="examples">
-			<div id="single-slide" class="hatchling-slide">
+			<div id="single-slide" class="slide">
 				<h2>Single Element Slider</h2>
 				<p>
                     This example is for a single element (in this case image)
                     sliderwhich moves one per time
                 </p>
-				<div class="hls-viewslit">
-					<ul class="hls-items clearfix">
-						<li class="hls-item">
-							<img src="a.jpg" />
-						</li>
-						<li class="hls-item">
-							<img src="b.jpg" />
-						</li>
-						<li class="hls-item">
-							<img src="c.jpg" />
-						</li>
-					</ul>
-				</div>
-				<ul class="hls-controls">
-					<li class="hls-control hls-prev">Previous</li>
-					<li class="hls-control hls-next">Next</li>
+				<ul class="slide-view slide-items clearfix">
+					<li id="slide-first" class="slide-item">
+						<img src="a.jpg" />
+					</li>
+					<li id="slide-second" class="slide-item">
+						<img src="b.jpg" />
+					</li>
+					<li id="slide-third" class="slide-item">
+						<img src="c.jpg" />
+					</li>
+				</ul>
+				<ul class="slide-controls">
+					<li class="slide-control slide-prev">Previous</li>
+					<li class="slide-control slide-next">Next</li>
+                    <li class="slide-control">
+                        <a href="#slide-first"class="slide-select">
+                            First
+                        </a>
+                    </li>
+                    <li class="slide-control">
+                        <a href="#slide-second" class="slide-select">
+                            Second
+                        </a>
+                    </li>
+                    <li class="slide-control">
+                        <a href="#slide-third" class="slide-select">
+                            Thrid
+                        </a>
+                    </li>
 				</ul>
 			</div>
 		</section>
@@ -51,10 +64,10 @@
 
 	<!-- Scripts and working code -->
 	<script src="../libs/jquery/jquery.js"></script>
-	<script src="../dist/slide.min.js"></script>
+	<script src="../src/slide.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.hatchling-slide').slide({'loop': true});
+			$('.slide').slide();
 		});
 	</script>
 
