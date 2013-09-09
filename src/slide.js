@@ -69,8 +69,14 @@
 
         // Set and extend default options with user provided
         this.options = $.extend({
-            'loop': false
+            'loop': false,
+            'onChange': null,
+            'onInit': null
         }, options);
+
+        // Set event listeners
+        this.onChange = this.options.onChange;
+        this.onInit = this.options.onInit;
 
         // Set local private variables for managing the current state
         this._element = $(element);
@@ -92,6 +98,9 @@
         // Bind all events for next/previous/specific
         this._bind();
 
+        // Trigger that we are built and ready to roll
+        this._element.trigger('init', this._current);
+
         return this;
     };
 
@@ -103,6 +112,7 @@
      */
     Slide.prototype._bind = function () {
         var that = this;
+        // Element actions
         this._element.find('.slide-next').on('click', function (e) {
             that.next();
             e.preventDefault();
@@ -116,6 +126,17 @@
             var new_slide = that._element.find($this.attr('href'));
             that.setCurrent(new_slide);
             e.preventDefault();
+        });
+        // Event listeners
+        this._element.on('change', function (e, newslide, oldslide) {
+            if (typeof that.onChange === 'function') {
+                that.onChange.call(this, e, newslide, oldslide);
+            }
+        });
+        this._element.on('init', function (e, newslide) {
+            if (typeof that.onInit === 'function') {
+                that.onInit.call(this, e, newslide);
+            }
         });
         return this;
     };
@@ -131,6 +152,9 @@
         if (this.hasLess()) {
             this.setCurrent(this._current.prev());
         }
+        else if (this.options.loop === true) {
+            this.setCurrent(this._items.last());
+        }
     };
 
     /**
@@ -144,6 +168,9 @@
         if (this.hasMore()) {
             this.setCurrent(this._current.next());
         }
+        else if (this.options.loop === true) {
+            this.setCurrent(this._items.first());
+        }
     };
 
     /**
@@ -156,6 +183,7 @@
     Slide.prototype.setCurrent = function (new_slide) {
         var index = this._items.index(new_slide);
         var current_index = this._items.index(this._current);
+        var no_longer_current = this._current;
         // No item found
         if (index === -1 || index === current_index) {
             return;
@@ -173,6 +201,7 @@
                         'translateX(' + this._translate.toString() + '%)');
         this._current = this._current.removeClass('state-current');
         this._current = $(new_slide).addClass('state-current');
+        this._element.trigger('change', [this._current, no_longer_current]);
     };
 
     /**

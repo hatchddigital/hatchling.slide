@@ -64,10 +64,17 @@
 
 	<!-- Scripts and working code -->
 	<script src="../libs/jquery/jquery.js"></script>
-	<script src="../src/slide.js"></script>
+	<script src="../dist/slide.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.slide').slide();
+            var slideChange = function (e, newslide) {
+                window.console.log('New slide is ', newslide);
+            }
+            $('.slide').slide({
+                'loop': true,
+                'onChange': slideChange,
+                'onInit': slideChange
+            });
 		});
 	</script>
 
