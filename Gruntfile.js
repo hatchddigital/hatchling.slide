@@ -3,7 +3,6 @@ module.exports = function (grunt) {
     'use strict';
 
     var pkgConfig = {
-        app: 'hatchling-slide',
         src: 'src',
         dist: 'dist'
     };
@@ -39,8 +38,11 @@ module.exports = function (grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                '<%= config.app %>/src/{,*/}*.js'
-            ]
+                '<%= config.src %>/{,*/}*.js'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
+            }
         },
         uglify: {
             options: {

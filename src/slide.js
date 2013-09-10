@@ -104,6 +104,20 @@
         return this;
     };
 
+    Slide.prototype.supportsTransform = function () {
+        var prefixes = [
+            'transform', 'WebkitTransform', 'MozTransform',
+            'OTransform', 'msTransform'
+        ];
+        var i;
+        for(i = 0; i < prefixes.length; i++) {
+            if (document.createElement('div').style[prefixes[i]] !== undefined) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     /**
      * Attach click events for next/previous and moving to a specific
      * slide element from the required classes.
@@ -196,9 +210,18 @@
         else {
             this._translate = this._translate + ((current_index - index) * 100);
         }
-        // Transform the items in the slideshow to move into the correct position
-        this._items.css('transform',
-                        'translateX(' + this._translate.toString() + '%)');
+        // For browsers with tranform support we shuffle all slides across
+        // by the current translate positioning
+        if (this.supportsTransform) {
+            this._items.css('transform',
+                            'translateX(' + this._translate.toString() + '%)');
+        }
+        // The no animation version just shows the current slide and hides
+        // all others
+        else {
+            this._current.hide();
+            $(new_slide).show();
+        }
         this._current = this._current.removeClass('state-current');
         this._current = $(new_slide).addClass('state-current');
         this._element.trigger('change', [this._current, no_longer_current]);
@@ -238,7 +261,6 @@
      */
     $.fn.slide = function (options) {
 
-        var page_slides = [];
         options = options || {};
 
         return this.each(function () {
