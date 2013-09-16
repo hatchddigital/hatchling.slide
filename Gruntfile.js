@@ -47,7 +47,7 @@ module.exports = function (grunt) {
         uglify: {
             options: {
                 banner:
-                    '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                    '/*! <%= pkg.name %> - v<%= pkg.version %> -' +
                     ' <%= grunt.template.today("yyyy-mm-dd") %>\n' +
                     ' <%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
                     ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>; \n' +
@@ -94,7 +94,6 @@ module.exports = function (grunt) {
     // Simply watch script which does a build on entry
     grunt.registerTask('watch', [
         'default',
-        // 'qunit',
         'regarde'
     ]);
 
