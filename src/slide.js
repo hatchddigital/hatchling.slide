@@ -90,8 +90,11 @@
             this._current.addClass('state-current');
         }
 
+        // Set init state on controls
+        this._updateControls();
+
         // Initialize sizes for each slide for responsive nature
-        this._element.find('.slide-view').css(
+        this._element.find('.slide-items').css(
             'width', (100 * this._items.length).toString() + '%');
         this._items.css('width', (100 / this._items.length).toString() + '%');
 
@@ -195,6 +198,7 @@
      * @return Slide
      */
     Slide.prototype.setCurrent = function (new_slide) {
+        var $new_slide = $(new_slide);
         var index = this._items.index(new_slide);
         var current_index = this._items.index(this._current);
         var no_longer_current = this._current;
@@ -220,10 +224,11 @@
         // all others
         else {
             this._current.hide();
-            $(new_slide).show();
+            $new_slide.show();
         }
+        this._updateControls();
         this._current = this._current.removeClass('state-current');
-        this._current = $(new_slide).addClass('state-current');
+        this._current = $new_slide.addClass('state-current');
         this._element.trigger('change', [this._current, no_longer_current]);
     };
 
@@ -251,6 +256,32 @@
             return false;
         }
         return true;
+    };
+
+    /**
+     * Update the next/previous buttons with a class if it's not able
+     * to be used (as there are no images left)
+     *
+     * @return void
+     */
+    Slide.prototype._updateControls = function () {
+        var $prev = this._element.find('.slide-prev');
+        var $next = this._element.find('.slide-next');
+        if (this.options.loop) {
+            return;
+        }
+        if (!this.hasLess()) {
+            $prev.addClass('state-inactive');
+        }
+        else {
+            $prev.removeClass('state-inactive');
+        }
+        if (this.hasMore()) {
+            $next.removeClass('state-inactive');
+        }
+        else {
+            $next.addClass('state-inactive');
+        }
     };
 
     /**
