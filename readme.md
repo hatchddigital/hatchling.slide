@@ -60,6 +60,7 @@ slider with no controls!
         <li id="slide=-3" class="slide-item">
             <img src="image-2.jpg" />
         </li>
+    </ul>
     <ul class="controls">
         <li class="slide-control slide-prev">
             Previous Slide
