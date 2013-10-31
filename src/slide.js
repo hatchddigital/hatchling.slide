@@ -101,7 +101,11 @@
 
         // Initialize grouping based on breakpoint or provided grouping
         if (this.options.breakpoints !== null) {
-            this._bindBreakpoints(this.options.breakpoints);
+            // Ensure breakpoints are ordered correctly and bind the
+            // to a listner event
+            this._bindBreakpoints(this.options.breakpoints.sort(function (a, b) {
+                return a.width > b.width;
+            }));
             $(window).trigger('resize');
         }
         else {
@@ -149,14 +153,19 @@
         var breakpoints = this.options.breakpoints;
         $(window).on('resize', function () {
             var width = $(window).width();
+            var breakpoint;
             for (var i = breakpoints.length - 1; i >= 0; i--) {
-                var breakpoint = breakpoints[i];
-                if (breakpoint.width > width) {
+                breakpoint = breakpoints[i];
+                if (breakpoint.width < width) {
                     that.setGrouping(breakpoint.grouping);
                     that.setCurrent(that._current);
                     return;
                 }
             }
+            breakpoint = breakpoints[0];
+            that.setGrouping(breakpoint.grouping);
+            that.setCurrent(that._current);
+            return;
         });
     };
 
