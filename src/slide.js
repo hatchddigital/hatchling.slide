@@ -56,6 +56,13 @@
     'use strict';
 
     /**
+     * Helper methods.
+     */
+    var getTime = (Date.now || function() {
+        return new Date().getTime();
+    });
+
+    /**
      * Base object for storing requried information about each Slide module
      * on any given page.
      *
@@ -71,7 +78,9 @@
         this.options = $.extend({
             'loop': false,
             'onChange': null,
-            'onInit': null
+            'onInit': null,
+            'grouping': 4,
+            'breakpoints': null
         }, options);
 
         // Set event listeners
@@ -90,16 +99,20 @@
             this._current.addClass('state-current');
         }
 
-        // Set init state on controls
-        this._updateControls();
-
-        // Initialize sizes for each slide for responsive nature
-        this._element.find('.slide-items').css(
-            'width', (100 * this._items.length).toString() + '%');
-        this._items.css('width', (100 / this._items.length).toString() + '%');
+        // Initialize grouping based on breakpoint or provided grouping
+        if (this.options.breakpoints !== null) {
+            this._bindBreakpoints(this.options.breakpoints);
+            $(window).trigger('resize');
+        }
+        else {
+            this.setGrouping(this.options.grouping);
+        }
 
         // Bind all events for next/previous/specific
         this._bind();
+
+        // Draw the slideshow
+        this._draw();
 
         // Trigger that we are built and ready to roll
         this._element.trigger('init', this._current);
@@ -107,6 +120,72 @@
         return this;
     };
 
+    /**
+     * Draw the current slideshow. Generate the correct sizing and widths
+     * for each element to respond correctly at the current breakpoint.
+     * Also updates the controller state based on any changes.
+     *
+     * @return {Slide}
+     */
+    Slide.prototype._draw = function () {
+        // Set correct state on controls
+        this._updateControls();
+        // Initialize sizes for each slide for responsive nature
+        this._element.find('.slide-items').css(
+            'width', (100 * (this._items.length / this._grouping)).toString() + '%');
+        this._items.css('width', (100 / this._items.length).toString() + '%');
+        return this;
+    };
+
+    /**
+     * Setup breakpoint support for the slider. This will only be called
+     * if breakpoints are provided to the slider. Polling function to
+     * update the current draw state on browser width changes.
+     *
+     * @return void
+     */
+    Slide.prototype._bindBreakpoints = function () {
+        var that = this;
+        var breakpoints = this.options.breakpoints;
+        $(window).on('resize', function () {
+            var width = $(window).width();
+            for (var i = breakpoints.length - 1; i >= 0; i--) {
+                var breakpoint = breakpoints[i];
+                if (breakpoint.width > width) {
+                    that.setGrouping(breakpoint.grouping);
+                    that.setCurrent(that._current);
+                    return;
+                }
+            }
+        });
+    };
+
+    /**
+     * Update the current "grouping" of list items within the slideshow.
+     * Will force a redraw to match the new grouping.
+     *
+     * @param void
+     */
+    Slide.prototype.setGrouping = function (grouping) {
+        this._grouping = grouping;
+        this._translate_width = grouping * 100;
+        this._draw();
+    };
+
+    /**
+     * Return the current item grouping.
+     *
+     * @param int
+     */
+    Slide.prototype.getGrouping = function () {
+        return this._grouping;
+    };
+
+    /**
+     * Return true if current browser supports CSS3 transforms.
+     *
+     * @param bool
+     */
     Slide.prototype.supportsTransform = function () {
         var prefixes = [
             'transform', 'WebkitTransform', 'MozTransform',
@@ -202,17 +281,22 @@
         var index = this._items.index(new_slide);
         var current_index = this._items.index(this._current);
         var no_longer_current = this._current;
+        var new_translate_position;
+        var max_translate_position;
         // No item found
-        if (index === -1 || index === current_index) {
+        if (index === -1) {
             return;
         }
         // The item is after the current
-        else if (index > current_index) {
-            this._translate = this._translate - ((index - current_index) * 100);
+        else if (index >= current_index) {
+            max_translate_position = -100 * (this._items.length - this._grouping);
+            new_translate_position = this._translate - ((index - current_index) * this._translate_width);
+            this._translate = Math.max(max_translate_position, new_translate_position);
         }
         // The item is before the current
         else {
-            this._translate = this._translate + ((current_index - index) * 100);
+            new_translate_position = this._translate + ((current_index - index) * this._translate_width);
+            this._translate = Math.min(0, new_translate_position);
         }
         // For browsers with tranform support we shuffle all slides across
         // by the current translate positioning
@@ -239,7 +323,9 @@
      * @return bool
      */
     Slide.prototype.hasMore = function () {
-        if (this._translate === (-100 * (this._items.length - 1))) {
+        var new_translate_position = this._translate - this._translate_width;
+        var max_translate_position = -100 * (this._items.length - 1);
+        if (new_translate_position < max_translate_position) {
             return false;
         }
         return true;
@@ -252,10 +338,7 @@
      * @return bool
      */
     Slide.prototype.hasLess = function () {
-        if (this._translate === 0) {
-            return false;
-        }
-        return true;
+        return (this._translate < 0);
     };
 
     /**
