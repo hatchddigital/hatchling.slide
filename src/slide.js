@@ -62,6 +62,8 @@
         return new Date().getTime();
     });
 
+    $.fn.reverse = [].reverse;
+
     /**
      * Base object for storing requried information about each Slide module
      * on any given page.
@@ -94,10 +96,14 @@
 
         // Find the initial current image
         this._current = $(this._items.filter('.state-current'));
-        if (!this._current.length) {
-            this._current = this._items.first();
+        // If HTML configuration is not right, set the initial ones automatically
+        if (!this._current.length || this._current_length != this.options.grouping) {
+            this._current = this._items.slice(0, this.options.grouping);
             this._current.addClass('state-current');
         }
+
+        // Initialize correct setCurrent method
+        this.setCurrent = this.supportsTransform ? this._setCurrent : this._setCurrentSansTransition;
 
         // Initialize grouping based on breakpoint or provided grouping
         if (this.options.breakpoints !== null) {
@@ -142,18 +148,45 @@
     };
 
     /**
+     * Return next slide(s) based on the current provided slides. If grouping
+     * this will return the next "grouping" of slides.
+     *
+     * @param {Array} slide Slide to find next grouping of
+     * @return {Array} New list of slides
+     */
+    Slide.prototype._nextSlide = function (slide) {
+        if (this._grouping > 0) {
+            return slide.first().nextAll().andSelf().slice(this._grouping, this._grouping * 2);
+        }
+        return slide.next();
+    };
+
+    /**
+     * Return previous slide(s) based on the current provided slides. If
+     * grouping this will return the next "grouping" of slides.
+     *
+     * @param {Array} slide Slide to find next grouping of
+     * @return {Array} New list of slides
+     */
+    Slide.prototype._prevSlide = function (slide) {
+        if (this._grouping > 0) {
+            return slide.first().prevAll().slice(0, this._grouping).reverse();
+        }
+        return slide.prev();
+    };
+
+    /**
      * Setup breakpoint support for the slider. This will only be called
      * if breakpoints are provided to the slider. Polling function to
      * update the current draw state on browser width changes.
      *
      * @return void
      */
-    Slide.prototype._bindBreakpoints = function () {
+    Slide.prototype._bindBreakpoints = function (breakpoints) {
         var that = this;
-        var breakpoints = this.options.breakpoints;
         $(window).on('resize', function () {
-            var width = $(window).width();
             var breakpoint;
+            var width = (window.orientation !== undefined && Math.abs(window.orientation) === 180) ? $(window).height() : $(window).width();
             for (var i = breakpoints.length - 1; i >= 0; i--) {
                 breakpoint = breakpoints[i];
                 if (breakpoint.width < width) {
@@ -177,7 +210,6 @@
      */
     Slide.prototype.setGrouping = function (grouping) {
         this._grouping = grouping;
-        this._translate_width = grouping * 100;
         this._draw();
     };
 
@@ -255,7 +287,7 @@
      */
     Slide.prototype.prev = function () {
         if (this.hasLess()) {
-            this.setCurrent(this._current.prev());
+            this.setCurrent(this._prevSlide(this._current));
         }
         else if (this.options.loop === true) {
             this.setCurrent(this._items.last());
@@ -271,11 +303,34 @@
      */
     Slide.prototype.next = function () {
         if (this.hasMore()) {
-            this.setCurrent(this._current.next());
+            this.setCurrent(this._nextSlide(this._current));
         }
         else if (this.options.loop === true) {
             this.setCurrent(this._items.first());
         }
+    };
+
+    /**
+     * setCurrent for browsers that do not support CSS3 translate. Uses
+     * show/hide on each grouped elements.
+     *
+     * @param {selector} new_slide New element to  be visible & current
+     * @return Slide
+     */
+    Slide.prototype._setCurrentSansTransition = function (new_slide) {
+        var $new_slide = $(new_slide);
+        var $previous_slide = this._current;
+        var new_index = this._items.index(new_slide);
+        var previous_index = this._items.index(this._current);
+        // No item found
+        if (new_index === -1) {
+            return;
+        }
+        $previous_slide.hide().removeClass('state-current');
+        $new_slide.show().addClass('state-current');
+        this._current = $new_slide;
+        this._updateControls();
+        this._element.trigger('change', [$new_slide, $previous_slide]);
     };
 
     /**
@@ -285,11 +340,11 @@
      * @param {selector} new_slide New element to  be visible & current
      * @return Slide
      */
-    Slide.prototype.setCurrent = function (new_slide) {
+    Slide.prototype._setCurrent = function (new_slide) {
         var $new_slide = $(new_slide);
         var $previous_slide = this._current;
-        var new_index = this._items.index(new_slide);
-        var previous_index = this._items.index($previous_slide);
+        var new_index = this._items.index($new_slide.first());
+        var previous_index = this._items.index($previous_slide.first());
         var new_translate_position;
         var max_translate_position;
         // No item found
@@ -299,26 +354,17 @@
         // The item is after the current
         else if (new_index >= previous_index) {
             max_translate_position = -100 * (this._items.length - this._grouping);
-            new_translate_position = this._translate - ((new_index - previous_index) * this._translate_width);
+            new_translate_position = this._translate - ((new_index - previous_index) * 100);
             this._translate = Math.max(max_translate_position, new_translate_position);
         }
         // The item is before the current
         else {
-            new_translate_position = this._translate + ((previous_index - new_index) * this._translate_width);
+            new_translate_position = this._translate + ((previous_index - new_index) * 100);
             this._translate = Math.min(0, new_translate_position);
         }
-        // For browsers with tranform support we shuffle all slides across
-        // by the current translate positioning
-        if (this.supportsTransform) {
-            this._items.css('transform',
-                            'translateX(' + this._translate.toString() + '%)');
-        }
-        // The no animation version just shows the current slide and hides
-        // all others
-        else {
-            $previous_slide.hide();
-            $new_slide.show();
-        }
+        // Move each element across the screen the same distance
+        this._items.css('transform',
+                        'translateX(' + this._translate.toString() + '%)');
         // Redraw controls
         this._updateControls();
         // Update class states
@@ -334,12 +380,7 @@
      * @return bool
      */
     Slide.prototype.hasMore = function () {
-        var new_translate_position = this._translate - this._translate_width;
-        var max_translate_position = -100 * (this._items.length - 1);
-        if (new_translate_position < max_translate_position) {
-            return false;
-        }
-        return true;
+        return (this._items.index(this._current) + this._grouping) < this._items.length;
     };
 
     /**
@@ -349,7 +390,7 @@
      * @return bool
      */
     Slide.prototype.hasLess = function () {
-        return (this._translate < 0);
+        return (this._items.index(this._current) > 0);
     };
 
     /**
