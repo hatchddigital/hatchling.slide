@@ -79,7 +79,7 @@
             'loop': false,
             'onChange': null,
             'onInit': null,
-            'grouping': 4,
+            'grouping': 1,
             'breakpoints': null
         }, options);
 
@@ -287,24 +287,24 @@
      */
     Slide.prototype.setCurrent = function (new_slide) {
         var $new_slide = $(new_slide);
-        var index = this._items.index(new_slide);
-        var current_index = this._items.index(this._current);
-        var no_longer_current = this._current;
+        var $previous_slide = this._current;
+        var new_index = this._items.index(new_slide);
+        var previous_index = this._items.index($previous_slide);
         var new_translate_position;
         var max_translate_position;
         // No item found
-        if (index === -1) {
+        if (new_index === -1) {
             return;
         }
         // The item is after the current
-        else if (index >= current_index) {
+        else if (new_index >= previous_index) {
             max_translate_position = -100 * (this._items.length - this._grouping);
-            new_translate_position = this._translate - ((index - current_index) * this._translate_width);
+            new_translate_position = this._translate - ((new_index - previous_index) * this._translate_width);
             this._translate = Math.max(max_translate_position, new_translate_position);
         }
         // The item is before the current
         else {
-            new_translate_position = this._translate + ((current_index - index) * this._translate_width);
+            new_translate_position = this._translate + ((previous_index - new_index) * this._translate_width);
             this._translate = Math.min(0, new_translate_position);
         }
         // For browsers with tranform support we shuffle all slides across
@@ -316,13 +316,15 @@
         // The no animation version just shows the current slide and hides
         // all others
         else {
-            this._current.hide();
+            $previous_slide.hide();
             $new_slide.show();
         }
+        // Redraw controls
         this._updateControls();
-        this._current = this._current.removeClass('state-current');
+        // Update class states
+        $previous_slide.removeClass('state-current');
         this._current = $new_slide.addClass('state-current');
-        this._element.trigger('change', [this._current, no_longer_current]);
+        this._element.trigger('change', [this._current, $previous_slide]);
     };
 
     /**
