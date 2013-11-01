@@ -58,6 +58,28 @@
                     </li>
 				</ul>
 			</div>
+            <div id="grouped-slide" class="slide">
+                <h2>Grouped Slider</h2>
+                <p>
+                    This example groups together the slides into 2 items
+                    at once.
+                </p>
+                <ul class="slide-view slide-items clearfix">
+                    <li id="slide-first" class="slide-item">
+                        <img src="a.jpg" />
+                    </li>
+                    <li id="slide-second" class="slide-item">
+                        <img src="b.jpg" />
+                    </li>
+                    <li id="slide-third" class="slide-item">
+                        <img src="c.jpg" />
+                    </li>
+                </ul>
+                <ul class="slide-controls">
+                    <li class="slide-control slide-prev">Previous</li>
+                    <li class="slide-control slide-next">Next</li>
+                </ul>
+            </div>
 		</section>
 
 	</div>
@@ -70,10 +92,14 @@
             var slideChange = function (e, newslide) {
                 window.console.log('New slide is ', newslide);
             }
-            $('.slide').slide({
+            $('#single-slide').slide({
                 'loop': false,
                 'onChange': slideChange,
                 'onInit': slideChange
+            });
+            $('#grouped-slide').slide({
+                'grouping': 2,
+                'loop': false
             });
 		});
 	</script>
