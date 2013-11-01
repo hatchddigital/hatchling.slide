@@ -1,6 +1,9 @@
-<html>
-<head>
-	<title>Hatchling: Slide</title>
+<!DOCTYPE html>
+<html class="no-js" lang="en-au">
+    <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,user-scalable=no, scale=1, maximum-scale=1.0" />
+    <title>Hatchling: Slide</title>
 	<link rel="stylesheet" href="../dist/slide.css" media="screen" />
 	<link rel="stylesheet" href="styles.css" media="screen" />
 </head>
@@ -65,14 +68,23 @@
                     at once.
                 </p>
                 <ul class="slide-view slide-items clearfix">
-                    <li id="slide-first" class="slide-item">
+                    <li id="grouped-slide-first" class="slide-item">
                         <img src="a.jpg" />
                     </li>
-                    <li id="slide-second" class="slide-item">
+                    <li id="grouped-slide-second" class="slide-item">
                         <img src="b.jpg" />
                     </li>
-                    <li id="slide-third" class="slide-item">
+                    <li id="grouped-slide-third" class="slide-item">
                         <img src="c.jpg" />
+                    </li>
+                    <li id="grouped-slide-fourth" class="slide-item">
+                        <img src="c.jpg" />
+                    </li>
+                    <li id="grouped-slide-fifth" class="slide-item">
+                        <img src="b.jpg" />
+                    </li>
+                    <li id="grouped-slide-sixth" class="slide-item">
+                        <img src="a.jpg" />
                     </li>
                 </ul>
                 <ul class="slide-controls">
@@ -92,14 +104,17 @@
             var slideChange = function (e, newslide) {
                 window.console.log('New slide is ', newslide);
             }
-            $('#single-slide').slide({
-                'loop': false,
-                'onChange': slideChange,
-                'onInit': slideChange
-            });
+            // $('#single-slide').slide({
+            //     'loop': false,
+            //     'onChange': slideChange,
+            //     'onInit': slideChange
+            // });
             $('#grouped-slide').slide({
-                'grouping': 2,
-                'loop': false
+                'breakpoints': [
+                    { width: 200, grouping: 1 },
+                    { width: 500, grouping: 3 },
+                    { width: 1000, grouping: 4 }
+                ]
             });
 		});
 	</script>
