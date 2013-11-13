@@ -365,12 +365,14 @@
         // Move each element across the screen the same distance
         this._items.css('transform',
                         'translateX(' + this._translate.toString() + '%)');
-        // Redraw controls
-        this._updateControls();
+        
         // Update class states
         $previous_slide.removeClass('state-current');
         this._current = $new_slide.addClass('state-current');
         this._element.trigger('change', [this._current, $previous_slide]);
+        
+        // Redraw controls
+        this._updateControls();
     };
 
     /**
