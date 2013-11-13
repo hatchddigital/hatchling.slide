@@ -91,6 +91,7 @@ All you are required to do is attach the jQuery plugin
 `$('.slide').slide();` to the parent element of your markup.
 
 ## Release History
+- v0.2.3 Fix bug relating to the state of pagination after slide events
 - v0.2.1 Added support for grouping (manually or through pixel/breakpoint sizes)
 - v0.2.0 Added transform support, removing all jQuery animation with fallbacks
 - v0.1.1 Added new package support and updated documentation
