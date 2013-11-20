@@ -180,6 +180,10 @@
      * if breakpoints are provided to the slider. Polling function to
      * update the current draw state on browser width changes.
      *
+     * Notice that the default grouping (effectively a 0 width breakpoint)
+     * is 1. To customize this behaviour pass an initial width 0 breakpoint
+     * to the configuration.
+     *
      * @return void
      */
     Slide.prototype._bindBreakpoints = function (breakpoints) {
@@ -195,8 +199,7 @@
                     return;
                 }
             }
-            breakpoint = breakpoints[0];
-            that.setGrouping(breakpoint.grouping);
+            that.setGrouping(1);
             that.setCurrent(that._current);
             return;
         });
@@ -365,12 +368,12 @@
         // Move each element across the screen the same distance
         this._items.css('transform',
                         'translateX(' + this._translate.toString() + '%)');
-        
+
         // Update class states
         $previous_slide.removeClass('state-current');
         this._current = $new_slide.addClass('state-current');
         this._element.trigger('change', [this._current, $previous_slide]);
-        
+
         // Redraw controls
         this._updateControls();
     };

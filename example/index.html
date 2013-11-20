@@ -111,9 +111,9 @@
             // });
             $('#grouped-slide').slide({
                 'breakpoints': [
-                    { width: 200, grouping: 1 },
-                    { width: 500, grouping: 3 },
-                    { width: 1000, grouping: 4 }
+                    { width: 0, grouping: 2 }, // Default to groups of 2 below 200 px
+                    { width: 200, grouping: 3 }, // Break to groups of 3 above 200 px
+                    { width: 500, grouping: 4 }  // Break to groups of 4 above 500 px
                 ]
             });
 		});
