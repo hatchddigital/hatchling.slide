@@ -199,7 +199,7 @@
                     return;
                 }
             }
-            that.setGrouping(1);
+            that.setGrouping(this.options.grouping);
             that.setCurrent(that._current);
             return;
         });
