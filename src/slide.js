@@ -103,7 +103,7 @@
         }
 
         // Initialize correct setCurrent method
-        this.setCurrent = this.supportsTransform ? this._setCurrent : this._setCurrentSansTransition;
+        this.setCurrent = this.supportsTransform() ? this._setCurrent : this._setCurrentSansTransition;
 
         // Initialize grouping based on breakpoint or provided grouping
         if (this.options.breakpoints !== null) {
