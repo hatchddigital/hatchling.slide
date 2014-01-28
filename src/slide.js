@@ -323,17 +323,24 @@
     Slide.prototype._setCurrentSansTransition = function (new_slide) {
         var $new_slide = $(new_slide);
         var $previous_slide = this._current;
-        var new_index = this._items.index(new_slide);
-        var previous_index = this._items.index(this._current);
-        // No item found
-        if (new_index === -1) {
-            return;
+        var new_index = this._items.index($new_slide.first());
+        var stop_index = new_index + (this._grouping - 1);
+        for (var i = 0; i < this._items.length; ++i) {
+            if (i < new_index) {
+                $(this._items[i]).hide().removeClass('state-current');
+            }
+            else if ((i >= new_index) && (i <= stop_index)) {
+                $(this._items[i]).show().addClass('state-current');
+            }
+            else {
+                $(this._items[i]).hide().removeClass('state-current');
+            }
         }
-        $previous_slide.hide().removeClass('state-current');
-        $new_slide.show().addClass('state-current');
         this._current = $new_slide;
+        this._element.trigger('change', [this._current, $previous_slide]);
+
+        // Redraw controls
         this._updateControls();
-        this._element.trigger('change', [$new_slide, $previous_slide]);
     };
 
     /**
