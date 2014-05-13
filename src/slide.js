@@ -82,7 +82,8 @@
             'onChange': null,
             'onInit': null,
             'grouping': 1,
-            'breakpoints': null
+            'breakpoints': null,
+            'pagination': false
         }, options);
 
         // Set event listeners
@@ -116,6 +117,11 @@
         }
         else {
             this.setGrouping(this.options.grouping);
+        }
+
+        // Create pagination if required
+        if (this.options.pagination) {
+            this._drawPagination();
         }
 
         // Bind all events for next/previous/specific
@@ -414,6 +420,15 @@
     Slide.prototype._updateControls = function () {
         var $prev = this._element.find('.slide-prev');
         var $next = this._element.find('.slide-next');
+        var current_page;
+
+        if (this.options.pagination) {
+            this._element.find('.slide-controls .page.active').removeClass('active');
+            current_page = Math.floor(
+                (this._items.index(this._current) + 1) / this._grouping);
+            $(this._element.find('.slide-controls .page')[current_page]).addClass('active');
+        }
+
         if (this.options.loop) {
             return;
         }
@@ -430,6 +445,41 @@
             $next.addClass('state-inactive');
         }
     };
+
+    /**
+     * Adds pagination links to the slide-controls DOM element
+     *
+     * @return viud
+     */
+    Slide.prototype._drawPagination = function() {
+        var that = this;
+        var pages = this._items.length;
+        var $slide_controls = this._element.find('.slide-controls');
+        var $page_container;
+        var $page_link;
+        var page_click_callback = function(e) {
+            var page = $(this).data('page');
+            e.preventDefault();
+            if (that.options.grouping > 1) {
+                page = page * that.options.grouping;
+            }
+            that.setCurrent(that._element.find('.slide-item')[page]);
+        };
+
+        if (this.options.grouping > 1) {
+            pages = Math.ceil(this._items.length / this.options.grouping);
+        }
+        for (var i = 0; i < pages; i++) {
+            $page_container = $('<li class="page" />');
+            $page_link = $('<a href="#" />');
+            $page_link.data('page', i);
+            $page_link.on('click', page_click_callback);
+            $page_container.append($page_link);
+            // todo: append after slide-prev where possible
+            $slide_controls.append($page_container);
+        }
+    };
+
 
     /**
      * jQuery plugin function to initialize any Slide interface provided.
