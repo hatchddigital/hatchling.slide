@@ -465,7 +465,7 @@
     Slide.prototype._drawPagination = function() {
         var that = this;
         var pages = this._items.length;
-        var $slide_controls = this._element.find('.slide-controls');
+        var $pages = this._element.find('.slide-controls .pagination');
         var $page_container;
         var $page_link;
         var page_click_callback = function(e) {
@@ -476,7 +476,7 @@
             }
             that.setCurrent(that._element.find('.slide-item')[page]);
         };
-        $slide_controls.find('.page').remove();
+        $pages.find('.page').remove();
         if (this._grouping > 1) {
             pages = Math.ceil(this._items.length / this._grouping);
         }
@@ -486,8 +486,7 @@
             $page_link.data('page', i);
             $page_link.on('click', page_click_callback);
             $page_container.append($page_link);
-            // todo: append after slide-prev where possible
-            $slide_controls.append($page_container);
+            $pages.append($page_container);
         }
     };
 
