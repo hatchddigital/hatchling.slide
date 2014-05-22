@@ -117,11 +117,10 @@
         }
         else {
             this.setGrouping(this.options.grouping);
-        }
-
-        // Create pagination if required
-        if (this.options.pagination) {
-            this._drawPagination();
+            // Create pagination if required
+            if (this.options.pagination) {
+                this._drawPagination();
+            }
         }
 
         // Bind all events for next/previous/specific
@@ -201,11 +200,17 @@
                 breakpoint = breakpoints[i];
                 if (breakpoint.width < width) {
                     that.setGrouping(breakpoint.grouping);
+                    if (that.options.pagination) {
+                        that._drawPagination();
+                    }
                     that.setCurrent(that._current);
                     return;
                 }
             }
             that.setGrouping(that.options.grouping);
+            if (that.options.pagination) {
+                that._drawPagination();
+            }
             that.setCurrent(that._current);
             return;
         });
@@ -424,8 +429,14 @@
 
         if (this.options.pagination) {
             this._element.find('.slide-controls .page.active').removeClass('active');
-            current_page = Math.floor(
-                (this._items.index(this._current) + 1) / this._grouping);
+            if (this._grouping > 1) {
+                current_page = Math.floor(
+                    (this._items.index(this._current) + 1) / this._grouping);
+            }
+            else {
+                current_page = this._items.index(this._current);
+            }
+
             $(this._element.find('.slide-controls .page')[current_page]).addClass('active');
         }
 
@@ -460,14 +471,14 @@
         var page_click_callback = function(e) {
             var page = $(this).data('page');
             e.preventDefault();
-            if (that.options.grouping > 1) {
-                page = page * that.options.grouping;
+            if (that._grouping > 1) {
+                page = page * that._grouping;
             }
             that.setCurrent(that._element.find('.slide-item')[page]);
         };
-
-        if (this.options.grouping > 1) {
-            pages = Math.ceil(this._items.length / this.options.grouping);
+        $slide_controls.find('.page').remove();
+        if (this._grouping > 1) {
+            pages = Math.ceil(this._items.length / this._grouping);
         }
         for (var i = 0; i < pages; i++) {
             $page_container = $('<li class="page" />');
