@@ -277,6 +277,7 @@
             if (typeof that.onInit === 'function') {
                 that.onInit.call(this, e, newslide);
             }
+            that.first();
         });
         return this;
     };
@@ -310,6 +311,22 @@
         }
         else if (this.options.loop === true) {
             this.setCurrent(this._items.first());
+        }
+    };
+
+    /**
+     * Trigger the 'first' element on this list.
+     */
+    Slide.prototype.first = function () {
+        this.setCurrent(this._items.first());
+    };
+
+    /**
+     * Trigger the nth element on this list
+     */
+    Slide.prototype.nth = function (offset) {
+        if ((offset >= 0) && (offset < this._items.length)) {
+            this.setCurrent(this._items[offset]);
         }
     };
 
@@ -380,6 +397,22 @@
         $previous_slide.removeClass('state-current');
         this._current = $new_slide.addClass('state-current');
         this._element.trigger('change', [this._current, $previous_slide]);
+
+        // If this element has a high resolution image attached, swap to that on load
+        var $img = $(this._current).find('img');
+        var hires = $img.attr('data-src');
+        if (hires && (hires != $img.attr('src'))) {
+            var image = new window.Image();
+            image.src = hires;
+            if (image.complete || (image.width+image.height) > 0) {
+                $img.attr('src', hires);
+            }
+            else {
+                image.onload = function() {
+                    $img.attr('src', hires);
+                };
+            }
+        }
 
         // Redraw controls
         this._updateControls();
