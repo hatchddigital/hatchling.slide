@@ -477,7 +477,7 @@
 
         return this.each(function () {
             var slide = $(this).data('slide');
-            if (!slideo || force) {
+            if (!slide || force) {
                 slide = new Slide(this, options);
                 $(this).data('slide', slide);
             }
