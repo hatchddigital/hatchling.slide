@@ -91,6 +91,7 @@ All you are required to do is attach the jQuery plugin
 `$('.slide').slide();` to the parent element of your markup.
 
 ## Release History
+- v0.2.8 Allow slide to act multiple times on the same element.
 - v0.2.6 Fix bug for older browsers state transition.
 - v0.2.4 Fix bug relating to default behaviour for responsive breakpoints.
 - v0.2.3 Fix bug relating to the state of pagination after slide events

@@ -468,23 +468,21 @@
      * jQuery plugin function to initialize any Slide interface provided.
      *
      * @param {object} options User options for new slide interface
+     * @param {boolean} force True to allow slide to reload elements
      * @return {selector}
      */
-    $.fn.slide = function (options) {
+    $.fn.slide = function (options, force) {
 
         options = options || {};
 
         return this.each(function () {
             var slide = $(this).data('slide');
-            if (!slide) {
+            if (!slideo || force) {
                 slide = new Slide(this, options);
                 $(this).data('slide', slide);
             }
-
         });
-
     };
 
     return Slide;
-
 }));
