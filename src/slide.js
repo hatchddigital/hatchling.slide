@@ -451,7 +451,7 @@
 
         if ($bullets.length) {
             $bullets.removeClass('state--active');
-            $bullets[this._items.index(this._current)].addClass('state--active');
+            $bullets.eq(this._items.index(this._current)).addClass('state--active');
         }
         if (!this.options.loop) {
             if (!this.hasLess()) {
