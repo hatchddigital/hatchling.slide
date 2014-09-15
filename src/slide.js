@@ -447,20 +447,25 @@
     Slide.prototype._updateControls = function () {
         var $prev = this._element.find('.slide-prev');
         var $next = this._element.find('.slide-next');
-        if (this.options.loop) {
-            return;
+        var $bullets = this._element.find('.slide-bullets .slide-bullet');
+
+        if ($bullets.length) {
+            $bullets.removeClass('state--active');
+            $bullets[this._items.index(this._current)].addClass('state--active');
         }
-        if (!this.hasLess()) {
-            $prev.addClass('state-inactive');
-        }
-        else {
-            $prev.removeClass('state-inactive');
-        }
-        if (this.hasMore()) {
-            $next.removeClass('state-inactive');
-        }
-        else {
-            $next.addClass('state-inactive');
+        if (!this.options.loop) {
+            if (!this.hasLess()) {
+                $prev.addClass('state-inactive');
+            }
+            else {
+                $prev.removeClass('state-inactive');
+            }
+            if (this.hasMore()) {
+                $next.removeClass('state-inactive');
+            }
+            else {
+                $next.addClass('state-inactive');
+            }
         }
     };
 
