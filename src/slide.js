@@ -187,22 +187,40 @@
      * @return void
      */
     Slide.prototype._bindBreakpoints = function (breakpoints) {
-        var that = this;
+        var self = this;
         $(window).on('resize', function () {
             var breakpoint;
-            var width = (window.orientation !== undefined && Math.abs(window.orientation) === 180) ? $(window).height() : $(window).width();
+            var width = self._windowWidth();
             for (var i = breakpoints.length - 1; i >= 0; i--) {
                 breakpoint = breakpoints[i];
                 if (breakpoint.width < width) {
-                    that.setGrouping(breakpoint.grouping);
-                    that.setCurrent(that._current);
+                    self.setGrouping(breakpoint.grouping);
+                    self.setCurrent(self._current);
                     return;
                 }
             }
-            that.setGrouping(that.options.grouping);
-            that.setCurrent(that._current);
+            self.setGrouping(self.options.grouping);
+            self.setCurrent(self._current);
             return;
         });
+    };
+
+    /**
+     * Determine window width.
+     * Note that this is a best guess; devices like the samsung galaxy tab report orientation 0 as landscape.
+     * This works for any 'sane' device that reports orientation 0 as portrait.
+     */
+    Slide.prototype._windowWidth = function() {
+        if (window.orientation === null) return $(window).width();
+        switch(window.orientation)
+        {
+            case -90:
+            case 90:
+                return $(window).width();
+
+          default:
+                return $(window).height();
+        }
     };
 
     /**
