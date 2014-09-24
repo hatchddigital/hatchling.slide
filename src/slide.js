@@ -189,37 +189,49 @@
     Slide.prototype._bindBreakpoints = function (breakpoints) {
         var self = this;
         $(window).on('resize', function () {
-            var breakpoint;
-            var width = self._windowWidth();
-            for (var i = breakpoints.length - 1; i >= 0; i--) {
-                breakpoint = breakpoints[i];
-                if (breakpoint.width < width) {
-                    self.setGrouping(breakpoint.grouping);
-                    self.setCurrent(self._current);
-                    return;
-                }
+            if (self.resizeWaitEvent) {
+                window.clearTimeout(self.resizeWaitEvent);
             }
-            self.setGrouping(self.options.grouping);
-            self.setCurrent(self._current);
+            self.resizeWaitEvent = window.setTimeout(function() {
+                var breakpoint;
+                var width = self._windowWidth();
+                for (var i = breakpoints.length - 1; i >= 0; i--) {
+                    breakpoint = breakpoints[i];
+                    if (breakpoint.width < width) {
+                        self.setGrouping(breakpoint.grouping);
+                        self.setCurrent(self._current);
+                        return;
+                    }
+                }
+                self.setGrouping(self.options.grouping);
+                self.setCurrent(self._current);
+            }, 1000);
             return;
         });
     };
 
     /**
      * Determine window width.
-     * Note that this is a best guess; devices like the samsung galaxy tab report orientation 0 as landscape.
      * This works for any 'sane' device that reports orientation 0 as portrait.
      */
     Slide.prototype._windowWidth = function() {
         if (window.orientation === null) return $(window).width();
+        var width = $(window).width();
+        var height = $(window).height();
         switch(window.orientation)
         {
+            // Landscape
+            // Pick biggest dimension to cater for devices that don't
+            // update width/height after a rotation event.
             case -90:
             case 90:
-                return $(window).width();
+                return width > height ? width : height;
 
-          default:
-                return $(window).height();
+            // Portrait
+            // Pick smallest dimension to cater for devices that don't
+            // update width/height after a rotation event.
+            default:
+                return width < height ? width : height;
         }
     };
 
