@@ -112,7 +112,8 @@
             this._bindBreakpoints(this.options.breakpoints.sort(function (a, b) {
                 return a.width > b.width;
             }));
-            $(window).trigger('resize');
+            this.setGrouping(1);
+            $(window).trigger('resize'); // This is async
         }
         else {
             this.setGrouping(this.options.grouping);
