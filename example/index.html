@@ -97,18 +97,18 @@
 	</div>
 
 	<!-- Scripts and working code -->
-	<script src="../libs/jquery/jquery.js"></script>
+	<script src="../libs/jquery/dist/jquery.js"></script>
 	<script src="../dist/slide.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
             var slideChange = function (e, newslide) {
                 window.console.log('New slide is ', newslide);
             }
-            // $('#single-slide').slide({
-            //     'loop': false,
-            //     'onChange': slideChange,
-            //     'onInit': slideChange
-            // });
+            $('#single-slide').slide({
+                'loop': false,
+                'onChange': slideChange,
+                'onInit': slideChange
+            });
             $('#grouped-slide').slide({
                 'breakpoints': [
                     { width: 0, grouping: 2 }, // Default to groups of 2 below 200 px

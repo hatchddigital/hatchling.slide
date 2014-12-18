@@ -310,6 +310,10 @@
             }
             that.first();
         });
+        this._element.find('.slide-bullets .slide-bullet').on('click', function (e) {
+            that.nth($(this).index());
+            e.preventDefault();
+        });
         return this;
     };
 
