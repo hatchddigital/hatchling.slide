@@ -216,7 +216,9 @@
      * This works for any 'sane' device that reports orientation 0 as portrait.
      */
     Slide.prototype._windowWidth = function() {
-        if (window.orientation === null) return $(window).width();
+        if (typeof(window.orientation) == 'undefined' || window.orientation === null) {
+            return $(window).width();
+        }
         var width = $(window).width();
         var height = $(window).height();
         switch(window.orientation)
