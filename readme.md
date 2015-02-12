@@ -91,6 +91,7 @@ All you are required to do is attach the jQuery plugin
 `$('.slide').slide();` to the parent element of your markup.
 
 ## Release History
+- v0.2.14 Added touch support
 - v0.2.13 Fixed bug where orientation was returning undefined, not null
 - v0.2.12 Added support for bulletpoints and navigation through them.
 - v0.2.11 Bugfix for breakpoint support

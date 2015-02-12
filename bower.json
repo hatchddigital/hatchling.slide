@@ -1,7 +1,8 @@
 {
     "name": "slide",
-    "version": "0.2.13",
+    "version": "0.2.14",
     "dependencies": {
-        "jquery": ">1.7.x"
+        "jquery": ">1.7.x",
+        "jquery.event.swipe": "0.5.4"
     }
 }

@@ -41,6 +41,12 @@ Code: http://github.com/hatchddigital/hatchling.slide
   height: auto;
 }
 
+.no-transition .slide-item {
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
 .slide-controls {
   list-style: none;
   padding-left: 0;

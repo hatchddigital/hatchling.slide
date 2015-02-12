@@ -19,6 +19,10 @@
  *
  * @required jquery (v1.8.0+)
  * -- (http://jquery.com)
+ * @required jquery.event.swipe
+ * -- (https://github.com/stephband/jquery.event.swipe)
+ * @required jquery.event.move
+ * -- (https://github.com/stephband/jquery.event.move)
  *
  * VALIDATION
  *
@@ -316,6 +320,41 @@
             that.nth($(this).index());
             e.preventDefault();
         });
+
+        this._element.find('.slide-item').on('swipeleft', function(e) {
+            that.next();
+            e.preventDefault();
+        });
+        this._element.find('.slide-item').on('swiperight', function(e) {
+            that.prev();
+            e.preventDefault();
+        });
+
+        this._element.find('.slide-item').on('movestart', function(e) {
+            // If the movestart is heading off in an upwards or downwards
+            // direction, prevent it so that the browser scrolls normally.
+            if ((e.distX > e.distY && e.distX < -e.distY) ||
+               (e.distX < e.distY && e.distX > -e.distY)) {
+                e.preventDefault();
+            }
+
+            // Cancel any transition states so that we can move the image with
+            // the persons finger.
+            that._element.addClass('no-transition');
+        });
+
+        this._element.find('.slide-item').on('move', function(e) {
+            var percent_moved = (e.distX / $(this).width()) * 100;
+            that._items.css('transform', 'translateX(' + (that._translate + percent_moved) + '%)');
+        });
+
+        this._element.find('.slide-item').on('moveend', function(e) {
+            // Upon move end, turn the transitions back on and move the item
+            // back to its original position.
+            that._element.removeClass('no-transition');
+            that._items.css('transform', 'translateX(' + that._translate.toString() + '%)');
+        });
+
         return this;
     };
 
