@@ -82,6 +82,19 @@ module.exports = function (grunt) {
         }
     });
 
+    // Local dev
+    ext.configure({
+        connect: {
+            dev: {
+                options: {
+                    port: 3000,
+                    base: '.',
+                }
+            }
+        }
+    });
+    ext.registerTask('watch', ['connect', 'watcher'], 'watch', 'watcher');
+
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
