@@ -1,4 +1,5 @@
 /*global module:false*/
+var ext = require('./.gruntExt');
 module.exports = function (grunt) {
     'use strict';
 
@@ -88,7 +89,7 @@ module.exports = function (grunt) {
             dev: {
                 options: {
                     port: 3000,
-                    base: '.',
+                    base: '.'
                 }
             }
         }

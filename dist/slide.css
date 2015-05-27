@@ -17,41 +17,32 @@ Code: http://github.com/hatchddigital/hatchling.slide
 ......MMM... MM....:MMMMM:MM....ZMMMMM....MMMMMM7...MM....MMM.... MMMMMMD......
 
 */
-
 .slide {
   position: relative;
   overflow: hidden;
   width: 100%;
 }
-
 .slide-items {
   padding-left: 0;
   list-style: none;
 }
-
 .slide-item {
   float: left;
-  -webkit-transition: all .45s ease-in-out;
-  -o-transition: all .45s ease-in-out;
-  transition: all .45s ease-in-out;
+  -webkit-transition: all 0.45s ease-in-out;
+          transition: all 0.45s ease-in-out;
 }
-
 .slide-item img {
   width: 100%;
   height: auto;
 }
-
 .no-transition .slide-item {
   -webkit-transition: none;
-  -o-transition: none;
-  transition: none;
+          transition: none;
 }
-
 .slide-controls {
   list-style: none;
   padding-left: 0;
 }
-
 .slide-control {
   list-style: none;
   cursor: pointer;
