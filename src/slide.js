@@ -145,10 +145,16 @@
     Slide.prototype._draw = function () {
         // Set correct state on controls
         this._updateControls();
+
         // Initialize sizes for each slide for responsive nature
         this._element.find('.slide-items').css(
             'width', (100 * (this._items.length / this._grouping)).toString() + '%');
         this._items.css('width', (100 / this._items.length).toString() + '%');
+
+        // Add a count to display custom content for low item counts
+        var count = this._element.find('.slide-item').length;
+        this._element.find('.slide-items').attr('data-count', count);
+
         return this;
     };
 
