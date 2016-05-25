@@ -376,7 +376,7 @@
             this.setCurrent(this._prevSlide(this._current));
         }
         else if (this.options.loop === true) {
-            this.setCurrent(this._items.last());
+            this.setCurrent(this._items.last(), true);
         }
     };
 
@@ -392,7 +392,7 @@
             this.setCurrent(this._nextSlide(this._current));
         }
         else if (this.options.loop === true) {
-            this.setCurrent(this._items.first());
+            this.setCurrent(this._items.first(), true);
         }
     };
 
@@ -447,9 +447,10 @@
      * animation as required.
      *
      * @param {selector} new_slide New element to  be visible & current
+     * @param snap If true, jump immediately to this value, without animation.
      * @return Slide
      */
-    Slide.prototype._setCurrent = function (new_slide) {
+    Slide.prototype._setCurrent = function (new_slide, snap) {
         var $new_slide = $(new_slide);
         var $previous_slide = this._current;
         var new_index = this._items.index($new_slide.first());
@@ -474,6 +475,15 @@
         // Move each element across the screen the same distance
         this._items.css('transform',
                         'translateX(' + this._translate.toString() + '%)');
+
+        // If we are 'snapping' to a position, disable animations briefly
+        // by applying the 'pasued' state and then resume. This requires a
+        // css animation for .paused class that disables css animations.
+        if (snap) {
+          var self = this;
+          this._items.addClass('paused');
+          setTimeout(function() { self._items.removeClass('paused'); }, 100);
+        }
 
         // Update class states
         $previous_slide.removeClass('state-current');
