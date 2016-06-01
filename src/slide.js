@@ -325,6 +325,15 @@
     };
 
     /**
+     * Trigger the nth element on this list
+     */
+    Slide.prototype.nth = function (offset) {
+        if ((offset >= 0) && (offset < this._items.length)) {
+            this.setCurrent(this._items[offset]);
+        }
+    };
+
+    /**
      * setCurrent for browsers that do not support CSS3 translate. Uses
      * show/hide on each grouped elements.
      *
