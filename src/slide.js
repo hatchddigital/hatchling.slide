@@ -47,14 +47,14 @@
 (function (factory) {
     'use strict';
 
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    }
-    else {
+    // if (typeof define === 'function' && define.amd) {
+    //     // AMD. Register as an anonymous module.
+    //     define(['jquery'], factory);
+    // }
+    // else {
         // Browser globals
         window.Slide = factory(window.jQuery);
-    }
+    //}
 
 }(function ($) {
     'use strict';
@@ -79,7 +79,7 @@
     var Slide = function Slide(element, options) {
 
         var item_count;
-
+        
         // Set and extend default options with user provided
         this.options = $.extend({
             'loop': false,
