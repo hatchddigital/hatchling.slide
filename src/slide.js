@@ -79,7 +79,7 @@
     var Slide = function Slide(element, options) {
 
         var item_count;
-        
+
         // Set and extend default options with user provided
         this.options = $.extend({
             'loop': false,
