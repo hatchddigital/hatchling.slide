@@ -61,60 +61,90 @@
                     </li>
 				</ul>
 			</div>
-            <div id="grouped-slide" class="slide">
+
+
+            <div class="slider grouped-slide" id="grouped-slide">
                 <h2>Grouped Slider</h2>
                 <p>
-                    This example groups together the slides into 2 items
-                    at once.
+                    This example groups together the slides into various amount depending on the screen size<br />
+                    &lt; 400: 1<br />
+                    &gt; 400 &amp; &lt; 700: 2<br />
+                    &gt; 700 &amp; &lt; 900: 3<br />
+                    &gt; 900: 4<br />
                 </p>
-                <ul class="slide-view slide-items clearfix">
-                    <li id="grouped-slide-first" class="slide-item">
-                        <img src="a.jpg" />
-                    </li>
-                    <li id="grouped-slide-second" class="slide-item">
-                        <img src="b.jpg" />
-                    </li>
-                    <li id="grouped-slide-third" class="slide-item">
-                        <img src="c.jpg" />
-                    </li>
-                    <li id="grouped-slide-fourth" class="slide-item">
-                        <img src="c.jpg" />
-                    </li>
-                    <li id="grouped-slide-fifth" class="slide-item">
-                        <img src="b.jpg" />
-                    </li>
-                    <li id="grouped-slide-sixth" class="slide-item">
-                        <img src="a.jpg" />
-                    </li>
-                </ul>
-                <ul class="slide-controls">
-                    <li class="slide-control slide-prev">Previous</li>
-                    <li class="slide-control slide-next">Next</li>
-                </ul>
+                <div class="grouped-slide-contents">
+                    <ul class="slider-items slide-items">
+                        <li  class="slide-item">
+                            <img src="a.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="b.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="c.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="b.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="a.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="c.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="a.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="b.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="c.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="b.jpg" />
+                        </li>
+                        <li  class="slide-item">
+                            <img src="a.jpg" />
+                        </li>
+                    </ul>
+                    <ul class="slider-controls">
+                        <li class="slide-control slide-prev">Prev</li>
+                        <li class="slide-control slide-next">Next</li>
+                    </ul>
+                    <div class="slide-controls slider-pagination">
+                        <ul class="pagination slide-bullets"></ul>
+                    </div>
+                </div>
             </div>
+
 		</section>
 
 	</div>
 
 	<!-- Scripts and working code -->
-	<script src="../libs/jquery/jquery.js"></script>
-	<script src="../dist/slide.min.js"></script>
+	<script src="../libs/jquery/dist/jquery.js"></script>
+	<script src="../src/slide.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
             var slideChange = function (e, newslide) {
                 window.console.log('New slide is ', newslide);
             }
-            // $('#single-slide').slide({
-            //     'loop': false,
-            //     'onChange': slideChange,
-            //     'onInit': slideChange
-            // });
+
+            $('#single-slide').slide({
+                'loop': false,
+                'onChange': slideChange,
+                'onInit': slideChange
+            });
+
             $('#grouped-slide').slide({
                 'breakpoints': [
-                    { width: 0, grouping: 2 }, // Default to groups of 2 below 200 px
-                    { width: 200, grouping: 3 }, // Break to groups of 3 above 200 px
-                    { width: 500, grouping: 4 }  // Break to groups of 4 above 500 px
-                ]
+                    // { width: 300, grouping: 1 },
+                    { width: 400, grouping: 2 },
+                    { width: 700, grouping: 3 },
+                    { width: 900, grouping: 4 }
+                ],
+                pagination: true
             });
 		});
 	</script>

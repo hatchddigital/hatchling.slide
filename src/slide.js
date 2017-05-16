@@ -392,9 +392,13 @@
             new_translate_position = this._translate + ((previous_index - new_index) * 100);
             this._translate = Math.min(0, new_translate_position);
         }
-        // Move each element across the screen the same distance
-        this._items.css('transform',
-                        'translateX(' + this._translate.toString() + '%)');
+
+        // If tehre aren't enough items to fill up the group then push everything to the left.
+        if (this._items.length < this._grouping) {
+            this._translate = 0;
+        }
+
+        this._items.css('transform', 'translateX(' + this._translate.toString() + '%)');
 
         // Update class states
         $previous_slide.removeClass('state-current');

@@ -39,3 +39,50 @@ h2{
 .state-hide{
     display:none;
 }
+
+
+.slider-pagination ul {
+    list-style: disc outside;
+}
+.slider-pagination .page {
+    display: inline-block
+}
+
+
+.grouped-slide-contents {
+    overflow: hidden;
+        margin-right: 0;
+    margin-left: 0;
+
+}
+.slider-pagination .page a {
+    position: relative;
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    border-radius: 8px;
+    background: #000;
+    text-indent: -9000px;
+    cursor: pointer;
+}
+
+.slider-pagination .page.active a:before {
+    display: block;
+}
+
+.slider-pagination .page a:before {
+    width: 14px;
+    height: 14px;
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: -7px 0 0 -7px;
+    border: 1px solid #000;
+    border-radius: 14px;
+}
