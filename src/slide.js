@@ -19,6 +19,8 @@
  *
  * @required jquery (v1.8.0+)
  * -- (http://jquery.com)
+ * @required jquery-touchswipe (v1.6.18+)
+ * -- (https://github.com/mattbryson/TouchSwipe-Jquery-Plugin)
  *
  * VALIDATION
  *
@@ -287,6 +289,17 @@
         this._element.on('init', function (e, newslide) {
             if (typeof that.onInit === 'function') {
                 that.onInit.call(this, e, newslide);
+            }
+        });
+        this._element.swipe( {
+            allowPageScroll:"vertical",
+            swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+                if(direction === 'left'){
+                    that.next();
+                }
+                if(direction === 'right'){
+                    that.prev();
+                }
             }
         });
         return this;
