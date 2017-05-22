@@ -394,6 +394,10 @@
         if (new_index === -1) {
             return;
         }
+        // If there aren't enough items to fill up the group then centre everything
+        else if (this._items.length < this._grouping) {
+            this._translate = 50 * (this._grouping - this._items.length);
+        }
         // The item is after the current
         else if (new_index >= previous_index) {
             max_translate_position = -100 * (this._items.length - this._grouping);
@@ -406,10 +410,7 @@
             this._translate = Math.min(0, new_translate_position);
         }
 
-        // If tehre aren't enough items to fill up the group then push everything to the left.
-        if (this._items.length < this._grouping) {
-            this._translate = 0;
-        }
+
 
         this._items.css('transform', 'translateX(' + this._translate.toString() + '%)');
 
