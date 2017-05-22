@@ -200,6 +200,7 @@
             var width = (window.orientation !== undefined && Math.abs(window.orientation) === 180) ? $(window).height() : $(window).width();
             for (var i = breakpoints.length - 1; i >= 0; i--) {
                 breakpoint = breakpoints[i];
+
                 if (breakpoint.width < width) {
                     that.setGrouping(breakpoint.grouping);
                     if (that.options.pagination) {
@@ -395,7 +396,7 @@
             return;
         }
         // If there aren't enough items to fill up the group then centre everything
-        else if (this._items.length < this._grouping) {
+        else if (this._items.length <= this._grouping) {
             this._translate = 50 * (this._grouping - this._items.length);
         }
         // The item is after the current
@@ -409,8 +410,6 @@
             new_translate_position = this._translate + ((previous_index - new_index) * 100);
             this._translate = Math.min(0, new_translate_position);
         }
-
-
 
         this._items.css('transform', 'translateX(' + this._translate.toString() + '%)');
 
