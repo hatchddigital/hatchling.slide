@@ -64,7 +64,8 @@ module.exports = function (grunt) {
             dist: {
                 options: {
                     paths: ['<%= config.src %>'],
-                    yuicompress: true
+                    yuicompress: true,
+                    compress: true
                 },
                 files: {
                     '<%= config.dist %>/slide.css': '<%= config.src %>/slide.less'
